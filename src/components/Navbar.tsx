@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Scissors } from "lucide-react";
 
@@ -45,11 +46,11 @@ const Navbar = () => {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" size="sm">
-              Log In
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/login">Log In</Link>
             </Button>
-            <Button variant="hero" size="sm">
-              Get Started
+            <Button variant="hero" size="sm" asChild>
+              <Link to="/register">Get Started</Link>
             </Button>
           </div>
 
@@ -82,8 +83,12 @@ const Navbar = () => {
                 </a>
               ))}
               <div className="flex flex-col gap-2 mt-4">
-                <Button variant="ghost">Log In</Button>
-                <Button variant="hero">Get Started</Button>
+                <Button variant="ghost" asChild>
+                  <Link to="/login">Log In</Link>
+                </Button>
+                <Button variant="hero" asChild>
+                  <Link to="/register">Get Started</Link>
+                </Button>
               </div>
             </div>
           </motion.div>
