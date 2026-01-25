@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 
@@ -57,9 +58,11 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Button variant="hero" size="xl">
-              Start Free Trial
-              <ArrowRight className="ml-2 h-5 w-5" />
+            <Button variant="hero" size="xl" asChild>
+              <Link to="/register">
+                Start Free Trial
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
             </Button>
             <Button variant="heroOutline" size="xl">
               <Play className="mr-2 h-5 w-5" />

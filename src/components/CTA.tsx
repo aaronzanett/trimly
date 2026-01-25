@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
@@ -25,9 +26,11 @@ const CTA = () => {
             Join hundreds of barbershops already using Trimly to streamline their operations and grow their business.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="hero" size="xl">
-              Start Your Free Trial
-              <ArrowRight className="ml-2 h-5 w-5" />
+            <Button variant="hero" size="xl" asChild>
+              <Link to="/register">
+                Start Your Free Trial
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
             </Button>
             <p className="font-body text-sm text-muted-foreground">
               No credit card required • 14-day free trial
