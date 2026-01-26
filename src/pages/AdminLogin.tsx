@@ -106,7 +106,7 @@ const AdminLogin = () => {
             <span className="font-display text-2xl font-bold text-foreground">Admin Portal</span>
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-destructive/10 text-destructive rounded-full text-sm font-medium mb-4 ml-auto">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-destructive/10 text-destructive rounded-full text-sm font-medium mb-4 ml-auto mt-4">
             <Shield className="h-3.5 w-3.5" />
             Restricted Access
           </div>
