@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Scissors, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,6 +30,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -51,8 +52,10 @@ const Register = () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     toast({
       title: "Registration Successful!",
-      description: "Welcome to Trimly. Your account has been created.",
+      description: "Please verify your account with the code we sent you.",
     });
+    // Redirect to verification page
+    navigate("/verify-code");
   };
 
   return (
