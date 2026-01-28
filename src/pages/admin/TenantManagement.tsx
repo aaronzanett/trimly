@@ -114,29 +114,29 @@ export default function TenantManagement() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-display font-bold text-foreground">Tenant Management</h1>
-        <p className="text-muted-foreground mt-1">Manage all barbershop tenants on the platform</p>
+        <h1 className="text-3xl font-display font-bold text-[hsl(var(--admin-card-foreground))]">Tenant Management</h1>
+        <p className="text-[hsl(var(--admin-muted-foreground))] mt-1">Manage all barbershop tenants on the platform</p>
       </div>
 
       {/* Search */}
-      <Card className="bg-card border-border">
+      <Card className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
         <CardContent className="pt-6">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[hsl(var(--admin-muted-foreground))]" />
             <Input
               placeholder="Search tenants by name or email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-background border-border"
+              className="pl-10 bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))]"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* Tenants Table */}
-      <Card className="bg-card border-border">
+      <Card className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
         <CardHeader>
-          <CardTitle className="text-lg font-display flex items-center gap-2">
+          <CardTitle className="text-lg font-display flex items-center gap-2 text-[hsl(var(--admin-card-foreground))]">
             <Building2 className="w-5 h-5 text-primary" />
             Tenant List ({filteredTenants.length})
           </CardTitle>
@@ -144,34 +144,34 @@ export default function TenantManagement() {
         <CardContent>
           <Table>
             <TableHeader>
-              <TableRow className="border-border hover:bg-transparent">
-                <TableHead className="text-muted-foreground">Tenant</TableHead>
-                <TableHead className="text-muted-foreground">Status</TableHead>
-                <TableHead className="text-muted-foreground">Plan</TableHead>
-                <TableHead className="text-muted-foreground">Branches</TableHead>
-                <TableHead className="text-muted-foreground">Users</TableHead>
-                <TableHead className="text-muted-foreground text-right">Actions</TableHead>
+              <TableRow className="border-[hsl(var(--admin-border))] hover:bg-transparent">
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Tenant</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Status</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Plan</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Branches</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Users</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))] text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredTenants.map((tenant) => (
-                <TableRow key={tenant.id} className="border-border">
+                <TableRow key={tenant.id} className="border-[hsl(var(--admin-border))]">
                   <TableCell>
                     <div>
-                      <p className="font-medium text-foreground">{tenant.name}</p>
-                      <p className="text-xs text-muted-foreground">{tenant.email}</p>
+                      <p className="font-medium text-[hsl(var(--admin-card-foreground))]">{tenant.name}</p>
+                      <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">{tenant.email}</p>
                     </div>
                   </TableCell>
                   <TableCell>{getStatusBadge(tenant.status)}</TableCell>
-                  <TableCell className="text-foreground">{tenant.plan}</TableCell>
-                  <TableCell className="text-foreground">{tenant.branches}</TableCell>
-                  <TableCell className="text-foreground">{tenant.users}</TableCell>
+                  <TableCell className="text-[hsl(var(--admin-card-foreground))]">{tenant.plan}</TableCell>
+                  <TableCell className="text-[hsl(var(--admin-card-foreground))]">{tenant.branches}</TableCell>
+                  <TableCell className="text-[hsl(var(--admin-card-foreground))]">{tenant.users}</TableCell>
                   <TableCell className="text-right">
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => setSelectedTenant(tenant)}
-                      className="text-muted-foreground hover:text-foreground"
+                      className="text-[hsl(var(--admin-muted-foreground))] hover:text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-muted))]"
                     >
                       <Eye className="w-4 h-4" />
                     </Button>
@@ -185,9 +185,9 @@ export default function TenantManagement() {
 
       {/* Tenant Details Dialog */}
       <Dialog open={!!selectedTenant} onOpenChange={() => setSelectedTenant(null)}>
-        <DialogContent className="bg-card border-border">
+        <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
           <DialogHeader>
-            <DialogTitle className="font-display text-xl">{selectedTenant?.name}</DialogTitle>
+            <DialogTitle className="font-display text-xl text-[hsl(var(--admin-card-foreground))]">{selectedTenant?.name}</DialogTitle>
           </DialogHeader>
           {selectedTenant && (
             <div className="space-y-6">
@@ -199,37 +199,37 @@ export default function TenantManagement() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-[hsl(var(--admin-muted))]">
                   <GitBranch className="w-5 h-5 text-primary" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Branches</p>
-                    <p className="text-lg font-semibold text-foreground">{selectedTenant.branches}</p>
+                    <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">Branches</p>
+                    <p className="text-lg font-semibold text-[hsl(var(--admin-card-foreground))]">{selectedTenant.branches}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-[hsl(var(--admin-muted))]">
                   <Users className="w-5 h-5 text-primary" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Users</p>
-                    <p className="text-lg font-semibold text-foreground">{selectedTenant.users}</p>
+                    <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">Users</p>
+                    <p className="text-lg font-semibold text-[hsl(var(--admin-card-foreground))]">{selectedTenant.users}</p>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-3">
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-[hsl(var(--admin-muted))]">
                   <Calendar className="w-5 h-5 text-primary" />
                   <div className="flex-1">
-                    <p className="text-xs text-muted-foreground">Subscription Period</p>
-                    <p className="text-sm text-foreground">
+                    <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">Subscription Period</p>
+                    <p className="text-sm text-[hsl(var(--admin-card-foreground))]">
                       {selectedTenant.subscriptionStart} — {selectedTenant.subscriptionEnd}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-border">
-                <p className="text-xs text-muted-foreground">Contact Email</p>
-                <p className="text-sm text-foreground">{selectedTenant.email}</p>
+              <div className="pt-4 border-t border-[hsl(var(--admin-border))]">
+                <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">Contact Email</p>
+                <p className="text-sm text-[hsl(var(--admin-card-foreground))]">{selectedTenant.email}</p>
               </div>
             </div>
           )}

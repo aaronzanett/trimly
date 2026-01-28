@@ -137,8 +137,8 @@ export default function PlatformUsers() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-display font-bold text-foreground">Platform Users</h1>
-          <p className="text-muted-foreground mt-1">Manage platform administrator accounts</p>
+          <h1 className="text-3xl font-display font-bold text-[hsl(var(--admin-card-foreground))]">Platform Users</h1>
+          <p className="text-[hsl(var(--admin-muted-foreground))] mt-1">Manage platform administrator accounts</p>
         </div>
         <Button onClick={openCreateDialog} className="bg-primary text-primary-foreground hover:bg-primary/90">
           <Plus className="w-4 h-4 mr-2" />
@@ -147,24 +147,24 @@ export default function PlatformUsers() {
       </div>
 
       {/* Search */}
-      <Card className="bg-card border-border">
+      <Card className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
         <CardContent className="pt-6">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[hsl(var(--admin-muted-foreground))]" />
             <Input
               placeholder="Search users by name or email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-background border-border"
+              className="pl-10 bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))]"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* Users Table */}
-      <Card className="bg-card border-border">
+      <Card className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
         <CardHeader>
-          <CardTitle className="text-lg font-display flex items-center gap-2">
+          <CardTitle className="text-lg font-display flex items-center gap-2 text-[hsl(var(--admin-card-foreground))]">
             <Users className="w-5 h-5 text-primary" />
             Platform Users ({filteredUsers.length})
           </CardTitle>
@@ -172,28 +172,28 @@ export default function PlatformUsers() {
         <CardContent>
           <Table>
             <TableHeader>
-              <TableRow className="border-border hover:bg-transparent">
-                <TableHead className="text-muted-foreground">Name</TableHead>
-                <TableHead className="text-muted-foreground">Email</TableHead>
-                <TableHead className="text-muted-foreground">Phone</TableHead>
-                <TableHead className="text-muted-foreground">Created</TableHead>
-                <TableHead className="text-muted-foreground text-right">Actions</TableHead>
+              <TableRow className="border-[hsl(var(--admin-border))] hover:bg-transparent">
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Name</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Email</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Phone</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Created</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))] text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredUsers.map((user) => (
-                <TableRow key={user.id} className="border-border">
-                  <TableCell className="font-medium text-foreground">{user.name}</TableCell>
-                  <TableCell className="text-foreground">{user.email}</TableCell>
-                  <TableCell className="text-foreground">{user.phone}</TableCell>
-                  <TableCell className="text-muted-foreground">{user.createdAt}</TableCell>
+                <TableRow key={user.id} className="border-[hsl(var(--admin-border))]">
+                  <TableCell className="font-medium text-[hsl(var(--admin-card-foreground))]">{user.name}</TableCell>
+                  <TableCell className="text-[hsl(var(--admin-card-foreground))]">{user.email}</TableCell>
+                  <TableCell className="text-[hsl(var(--admin-card-foreground))]">{user.phone}</TableCell>
+                  <TableCell className="text-[hsl(var(--admin-muted-foreground))]">{user.createdAt}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-1">
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => openWhatsApp(user.phone)}
-                        className="text-green-500 hover:text-green-400 hover:bg-green-500/10"
+                        className="text-green-600 hover:text-green-500 hover:bg-green-500/10"
                         title="Open WhatsApp"
                       >
                         <MessageCircle className="w-4 h-4" />
@@ -202,7 +202,7 @@ export default function PlatformUsers() {
                         variant="ghost"
                         size="sm"
                         onClick={() => openEditDialog(user)}
-                        className="text-muted-foreground hover:text-foreground"
+                        className="text-[hsl(var(--admin-muted-foreground))] hover:text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-muted))]"
                       >
                         <Pencil className="w-4 h-4" />
                       </Button>
@@ -210,7 +210,7 @@ export default function PlatformUsers() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDelete(user.id)}
-                        className="text-muted-foreground hover:text-destructive"
+                        className="text-[hsl(var(--admin-muted-foreground))] hover:text-destructive hover:bg-destructive/10"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -225,65 +225,65 @@ export default function PlatformUsers() {
 
       {/* Create/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="bg-card border-border">
+        <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
           <DialogHeader>
-            <DialogTitle className="font-display text-xl">
+            <DialogTitle className="font-display text-xl text-[hsl(var(--admin-card-foreground))]">
               {editingUser ? "Edit User" : "Add New User"}
             </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-foreground">Name</Label>
+              <Label htmlFor="name" className="text-[hsl(var(--admin-card-foreground))]">Name</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="bg-background border-border"
+                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))]"
                 placeholder="John Smith"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-foreground">Email</Label>
+              <Label htmlFor="email" className="text-[hsl(var(--admin-card-foreground))]">Email</Label>
               <Input
                 id="email"
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="bg-background border-border"
+                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))]"
                 placeholder="john@trimly.com"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-foreground">Phone (with country code)</Label>
+              <Label htmlFor="phone" className="text-[hsl(var(--admin-card-foreground))]">Phone (with country code)</Label>
               <Input
                 id="phone"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="bg-background border-border"
+                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))]"
                 placeholder="+1234567890"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-foreground">
-                Password {editingUser && <span className="text-muted-foreground">(leave blank to keep current)</span>}
+              <Label htmlFor="password" className="text-[hsl(var(--admin-card-foreground))]">
+                Password {editingUser && <span className="text-[hsl(var(--admin-muted-foreground))]">(leave blank to keep current)</span>}
               </Label>
               <Input
                 id="password"
                 type="password"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="bg-background border-border"
+                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))]"
                 placeholder="••••••••"
               />
             </div>
           </div>
 
           <DialogFooter className="mt-6">
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-muted))]">
               Cancel
             </Button>
             <Button onClick={handleSave} className="bg-primary text-primary-foreground">
