@@ -18,6 +18,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Search, Eye, Building2, Users, GitBranch, Calendar } from "lucide-react";
+import { AdminPagination } from "@/components/admin/AdminPagination";
 
 type TenantStatus = "active" | "trial" | "suspended";
 
@@ -89,7 +90,31 @@ const tenants: Tenant[] = [
     branches: 1,
     users: 4,
   },
+  {
+    id: "6",
+    name: "Royal Cuts",
+    email: "info@royalcuts.com",
+    status: "active",
+    plan: "Professional",
+    subscriptionStart: "2024-02-01",
+    subscriptionEnd: "2025-02-01",
+    branches: 4,
+    users: 15,
+  },
+  {
+    id: "7",
+    name: "Modern Man Grooming",
+    email: "contact@modernman.com",
+    status: "trial",
+    plan: "Starter",
+    subscriptionStart: "2024-12-10",
+    subscriptionEnd: "2024-12-24",
+    branches: 1,
+    users: 2,
+  },
 ];
+
+const ITEMS_PER_PAGE = 5;
 
 const getStatusBadge = (status: TenantStatus) => {
   const variants: Record<TenantStatus, { variant: "default" | "secondary" | "destructive"; label: string }> = {
@@ -104,12 +129,28 @@ const getStatusBadge = (status: TenantStatus) => {
 export default function TenantManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTenant, setSelectedTenant] = useState<Tenant | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const filteredTenants = tenants.filter(
     (tenant) =>
       tenant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       tenant.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const totalPages = Math.ceil(filteredTenants.length / ITEMS_PER_PAGE);
+  const paginatedTenants = filteredTenants.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleSearch = (value: string) => {
+    setSearchQuery(value);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="space-y-6">
@@ -126,8 +167,8 @@ export default function TenantManagement() {
             <Input
               placeholder="Search tenants by name or email..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))]"
+              onChange={(e) => handleSearch(e.target.value)}
+              className="pl-10 bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))] focus-visible:border-primary"
             />
           </div>
         </CardContent>
@@ -154,8 +195,8 @@ export default function TenantManagement() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredTenants.map((tenant) => (
-                <TableRow key={tenant.id} className="border-[hsl(var(--admin-border))]">
+              {paginatedTenants.map((tenant) => (
+                <TableRow key={tenant.id} className="border-[hsl(var(--admin-border))] hover:bg-[hsl(var(--admin-row-hover))]">
                   <TableCell>
                     <div>
                       <p className="font-medium text-[hsl(var(--admin-card-foreground))]">{tenant.name}</p>
@@ -171,7 +212,7 @@ export default function TenantManagement() {
                       variant="ghost"
                       size="sm"
                       onClick={() => setSelectedTenant(tenant)}
-                      className="text-[hsl(var(--admin-muted-foreground))] hover:text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-muted))]"
+                      className="text-[hsl(var(--admin-muted-foreground))] hover:text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]"
                     >
                       <Eye className="w-4 h-4" />
                     </Button>
@@ -180,6 +221,12 @@ export default function TenantManagement() {
               ))}
             </TableBody>
           </Table>
+          
+          <AdminPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </CardContent>
       </Card>
 
