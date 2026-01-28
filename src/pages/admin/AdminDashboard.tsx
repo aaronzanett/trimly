@@ -64,23 +64,23 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-display font-bold text-foreground">Dashboard</h1>
-        <p className="text-muted-foreground mt-1">Platform overview and key metrics</p>
+        <h1 className="text-3xl font-display font-bold text-[hsl(var(--admin-card-foreground))]">Dashboard</h1>
+        <p className="text-[hsl(var(--admin-muted-foreground))] mt-1">Platform overview and key metrics</p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <Card key={stat.title} className="bg-card border-border">
+          <Card key={stat.title} className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
+              <CardTitle className="text-sm font-medium text-[hsl(var(--admin-muted-foreground))]">
                 {stat.title}
               </CardTitle>
               <stat.icon className="w-4 h-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-foreground">{stat.value}</div>
-              <p className={`text-xs mt-1 ${stat.changeType === "positive" ? "text-green-500" : "text-destructive"}`}>
+              <div className="text-2xl font-bold text-[hsl(var(--admin-card-foreground))]">{stat.value}</div>
+              <p className={`text-xs mt-1 ${stat.changeType === "positive" ? "text-green-600" : "text-destructive"}`}>
                 {stat.change} from last month
               </p>
             </CardContent>
@@ -89,26 +89,26 @@ export default function AdminDashboard() {
       </div>
 
       {/* Today's Activity */}
-      <Card className="bg-card border-border">
+      <Card className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
         <CardHeader className="flex flex-row items-center gap-2">
           <Calendar className="w-5 h-5 text-primary" />
-          <CardTitle className="text-lg font-display">Today's Activity</CardTitle>
+          <CardTitle className="text-lg font-display text-[hsl(var(--admin-card-foreground))]">Today's Activity</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {todayActivities.map((activity, index) => (
               <div
                 key={index}
-                className="flex items-center gap-4 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
+                className="flex items-center gap-4 p-3 rounded-lg bg-[hsl(var(--admin-muted))] hover:bg-[hsl(var(--admin-border))] transition-colors"
               >
                 <div className="flex-shrink-0">
                   {getActivityIcon(activity.type)}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-foreground">{activity.event}</p>
-                  <p className="text-xs text-muted-foreground truncate">{activity.tenant}</p>
+                  <p className="text-sm font-medium text-[hsl(var(--admin-card-foreground))]">{activity.event}</p>
+                  <p className="text-xs text-[hsl(var(--admin-muted-foreground))] truncate">{activity.tenant}</p>
                 </div>
-                <div className="text-xs text-muted-foreground">{activity.time}</div>
+                <div className="text-xs text-[hsl(var(--admin-muted-foreground))]">{activity.time}</div>
               </div>
             ))}
           </div>

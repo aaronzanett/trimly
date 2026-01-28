@@ -65,6 +65,17 @@
     --sidebar-accent-foreground: 40 33% 92%;
     --sidebar-border: 20 10% 20%;
     --sidebar-ring: 38 92% 50%;
+
+    /* Admin Portal Theme */
+    --admin-sidebar: 12 12% 8%;
+    --admin-sidebar-foreground: 40 33% 92%;
+    --admin-sidebar-border: 12 10% 15%;
+    --admin-background: 30 20% 96%;
+    --admin-card: 0 0% 100%;
+    --admin-card-foreground: 20 14% 15%;
+    --admin-muted: 30 15% 92%;
+    --admin-muted-foreground: 20 10% 45%;
+    --admin-border: 30 10% 88%;
   }
 
   .dark {

@@ -30,22 +30,22 @@ export function AdminSidebar() {
   };
 
   return (
-    <Sidebar className="border-r border-border">
-      <SidebarHeader className="p-4 border-b border-border">
+    <Sidebar className="border-r border-[hsl(var(--admin-sidebar-border))] bg-[hsl(var(--admin-sidebar))]">
+      <SidebarHeader className="p-4 border-b border-[hsl(var(--admin-sidebar-border))]">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
             <Shield className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
-            <h2 className="font-display text-lg font-semibold text-foreground">Trimly</h2>
-            <p className="text-xs text-muted-foreground">Admin Portal</p>
+            <h2 className="font-display text-lg font-semibold text-[hsl(var(--admin-sidebar-foreground))]">Trimly</h2>
+            <p className="text-xs text-[hsl(var(--admin-sidebar-foreground)/0.6)]">Admin Portal</p>
           </div>
         </div>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="bg-[hsl(var(--admin-sidebar))]">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-muted-foreground text-xs uppercase tracking-wider">
+          <SidebarGroupLabel className="text-[hsl(var(--admin-sidebar-foreground)/0.5)] text-xs uppercase tracking-wider">
             Management
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -60,7 +60,7 @@ export function AdminSidebar() {
                           "flex items-center gap-3 px-3 py-2 rounded-md transition-colors",
                           isActive
                             ? "bg-primary text-primary-foreground"
-                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                            : "text-[hsl(var(--admin-sidebar-foreground)/0.7)] hover:bg-[hsl(var(--admin-sidebar-foreground)/0.1)] hover:text-[hsl(var(--admin-sidebar-foreground))]"
                         )
                       }
                     >
@@ -75,10 +75,10 @@ export function AdminSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-border">
+      <SidebarFooter className="p-4 border-t border-[hsl(var(--admin-sidebar-border))] bg-[hsl(var(--admin-sidebar))]">
         <Button
           variant="ghost"
-          className="w-full justify-start gap-3 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+          className="w-full justify-start gap-3 text-[hsl(var(--admin-sidebar-foreground)/0.7)] hover:text-destructive hover:bg-destructive/10"
           onClick={handleLogout}
         >
           <LogOut className="w-4 h-4" />
