@@ -20,8 +20,9 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { CreditCard, Plus, Pencil, Trash2, Check, X } from "lucide-react";
+import { CreditCard, Plus, Pencil, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { AdminPagination } from "@/components/admin/AdminPagination";
 
 interface Plan {
   id: string;
@@ -85,6 +86,51 @@ const initialPlans: Plan[] = [
       api: true,
     },
   },
+  {
+    id: "4",
+    name: "Basic",
+    price: 19,
+    billingCycle: "monthly",
+    branchLimit: 1,
+    userLimit: 3,
+    features: {
+      appointments: true,
+      inventory: false,
+      analytics: false,
+      marketing: false,
+      api: false,
+    },
+  },
+  {
+    id: "5",
+    name: "Team",
+    price: 49,
+    billingCycle: "monthly",
+    branchLimit: 3,
+    userLimit: 10,
+    features: {
+      appointments: true,
+      inventory: true,
+      analytics: false,
+      marketing: false,
+      api: false,
+    },
+  },
+  {
+    id: "6",
+    name: "Premium",
+    price: 149,
+    billingCycle: "monthly",
+    branchLimit: 10,
+    userLimit: 50,
+    features: {
+      appointments: true,
+      inventory: true,
+      analytics: true,
+      marketing: true,
+      api: false,
+    },
+  },
 ];
 
 const featureLabels: Record<keyof Plan["features"], string> = {
@@ -95,11 +141,14 @@ const featureLabels: Record<keyof Plan["features"], string> = {
   api: "API Access",
 };
 
+const ITEMS_PER_PAGE = 5;
+
 export default function SubscriptionPlans() {
   const { toast } = useToast();
   const [plans, setPlans] = useState<Plan[]>(initialPlans);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingPlan, setEditingPlan] = useState<Plan | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [formData, setFormData] = useState<Omit<Plan, "id">>({
     name: "",
     price: 0,
@@ -114,6 +163,12 @@ export default function SubscriptionPlans() {
       api: false,
     },
   });
+
+  const totalPages = Math.ceil(plans.length / ITEMS_PER_PAGE);
+  const paginatedPlans = plans.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   const openCreateDialog = () => {
     setEditingPlan(null);
@@ -169,6 +224,10 @@ export default function SubscriptionPlans() {
     toast({ title: "Success", description: "Plan deleted successfully" });
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -203,8 +262,8 @@ export default function SubscriptionPlans() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {plans.map((plan) => (
-                <TableRow key={plan.id} className="border-[hsl(var(--admin-border))]">
+              {paginatedPlans.map((plan) => (
+                <TableRow key={plan.id} className="border-[hsl(var(--admin-border))] hover:bg-[hsl(var(--admin-row-hover))]">
                   <TableCell>
                     <p className="font-medium text-[hsl(var(--admin-card-foreground))]">{plan.name}</p>
                   </TableCell>
@@ -234,7 +293,7 @@ export default function SubscriptionPlans() {
                         variant="ghost"
                         size="sm"
                         onClick={() => openEditDialog(plan)}
-                        className="text-[hsl(var(--admin-muted-foreground))] hover:text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-muted))]"
+                        className="text-[hsl(var(--admin-muted-foreground))] hover:text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]"
                       >
                         <Pencil className="w-4 h-4" />
                       </Button>
@@ -252,6 +311,12 @@ export default function SubscriptionPlans() {
               ))}
             </TableBody>
           </Table>
+          
+          <AdminPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </CardContent>
       </Card>
 
@@ -271,7 +336,7 @@ export default function SubscriptionPlans() {
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))]"
+                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))] focus-visible:border-primary"
                 placeholder="e.g. Professional"
               />
             </div>
@@ -284,7 +349,7 @@ export default function SubscriptionPlans() {
                   type="number"
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
-                  className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]"
+                  className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] focus-visible:border-primary"
                 />
               </div>
               <div className="space-y-2">
@@ -295,7 +360,7 @@ export default function SubscriptionPlans() {
                     variant={formData.billingCycle === "monthly" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setFormData({ ...formData, billingCycle: "monthly" })}
-                    className="flex-1"
+                    className={`flex-1 ${formData.billingCycle !== "monthly" ? "border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]" : ""}`}
                   >
                     Monthly
                   </Button>
@@ -304,7 +369,7 @@ export default function SubscriptionPlans() {
                     variant={formData.billingCycle === "yearly" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setFormData({ ...formData, billingCycle: "yearly" })}
-                    className="flex-1"
+                    className={`flex-1 ${formData.billingCycle !== "yearly" ? "border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]" : ""}`}
                   >
                     Yearly
                   </Button>
@@ -320,7 +385,7 @@ export default function SubscriptionPlans() {
                   type="number"
                   value={formData.branchLimit}
                   onChange={(e) => setFormData({ ...formData, branchLimit: Number(e.target.value) })}
-                  className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]"
+                  className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] focus-visible:border-primary"
                 />
               </div>
               <div className="space-y-2">
@@ -330,7 +395,7 @@ export default function SubscriptionPlans() {
                   type="number"
                   value={formData.userLimit}
                   onChange={(e) => setFormData({ ...formData, userLimit: Number(e.target.value) })}
-                  className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]"
+                  className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] focus-visible:border-primary"
                 />
               </div>
             </div>
@@ -357,7 +422,7 @@ export default function SubscriptionPlans() {
           </div>
 
           <DialogFooter className="mt-6">
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-muted))]">
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
               Cancel
             </Button>
             <Button onClick={handleSave} className="bg-primary text-primary-foreground">

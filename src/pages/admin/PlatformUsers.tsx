@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Users, Plus, Pencil, Trash2, MessageCircle, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { AdminPagination } from "@/components/admin/AdminPagination";
 
 interface PlatformUser {
   id: string;
@@ -51,7 +52,30 @@ const initialUsers: PlatformUser[] = [
     phone: "+1122334455",
     createdAt: "2024-03-20",
   },
+  {
+    id: "4",
+    name: "Emily Davis",
+    email: "emily.d@trimly.com",
+    phone: "+1555666777",
+    createdAt: "2024-04-05",
+  },
+  {
+    id: "5",
+    name: "James Wilson",
+    email: "j.wilson@trimly.com",
+    phone: "+1888999000",
+    createdAt: "2024-05-12",
+  },
+  {
+    id: "6",
+    name: "Lisa Anderson",
+    email: "lisa.a@trimly.com",
+    phone: "+1444555666",
+    createdAt: "2024-06-18",
+  },
 ];
+
+const ITEMS_PER_PAGE = 5;
 
 export default function PlatformUsers() {
   const { toast } = useToast();
@@ -59,6 +83,7 @@ export default function PlatformUsers() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<PlatformUser | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -70,6 +95,12 @@ export default function PlatformUsers() {
     (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
+  const paginatedUsers = filteredUsers.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
   );
 
   const openCreateDialog = () => {
@@ -133,6 +164,15 @@ export default function PlatformUsers() {
     window.open(`https://wa.me/${cleanPhone}`, "_blank");
   };
 
+  const handleSearch = (value: string) => {
+    setSearchQuery(value);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -154,8 +194,8 @@ export default function PlatformUsers() {
             <Input
               placeholder="Search users by name or email..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))]"
+              onChange={(e) => handleSearch(e.target.value)}
+              className="pl-10 bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))] focus-visible:border-primary"
             />
           </div>
         </CardContent>
@@ -181,8 +221,8 @@ export default function PlatformUsers() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredUsers.map((user) => (
-                <TableRow key={user.id} className="border-[hsl(var(--admin-border))]">
+              {paginatedUsers.map((user) => (
+                <TableRow key={user.id} className="border-[hsl(var(--admin-border))] hover:bg-[hsl(var(--admin-row-hover))]">
                   <TableCell className="font-medium text-[hsl(var(--admin-card-foreground))]">{user.name}</TableCell>
                   <TableCell className="text-[hsl(var(--admin-card-foreground))]">{user.email}</TableCell>
                   <TableCell className="text-[hsl(var(--admin-card-foreground))]">{user.phone}</TableCell>
@@ -202,7 +242,7 @@ export default function PlatformUsers() {
                         variant="ghost"
                         size="sm"
                         onClick={() => openEditDialog(user)}
-                        className="text-[hsl(var(--admin-muted-foreground))] hover:text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-muted))]"
+                        className="text-[hsl(var(--admin-muted-foreground))] hover:text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]"
                       >
                         <Pencil className="w-4 h-4" />
                       </Button>
@@ -220,6 +260,12 @@ export default function PlatformUsers() {
               ))}
             </TableBody>
           </Table>
+          
+          <AdminPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </CardContent>
       </Card>
 
@@ -239,7 +285,7 @@ export default function PlatformUsers() {
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))]"
+                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))] focus-visible:border-primary"
                 placeholder="John Smith"
               />
             </div>
@@ -251,7 +297,7 @@ export default function PlatformUsers() {
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))]"
+                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))] focus-visible:border-primary"
                 placeholder="john@trimly.com"
               />
             </div>
@@ -262,7 +308,7 @@ export default function PlatformUsers() {
                 id="phone"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))]"
+                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))] focus-visible:border-primary"
                 placeholder="+1234567890"
               />
             </div>
@@ -276,14 +322,14 @@ export default function PlatformUsers() {
                 type="password"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))]"
+                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))] focus-visible:border-primary"
                 placeholder="••••••••"
               />
             </div>
           </div>
 
           <DialogFooter className="mt-6">
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-muted))]">
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
               Cancel
             </Button>
             <Button onClick={handleSave} className="bg-primary text-primary-foreground">

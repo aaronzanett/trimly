@@ -76,6 +76,8 @@
     --admin-muted: 30 15% 92%;
     --admin-muted-foreground: 20 10% 45%;
     --admin-border: 30 10% 88%;
+    --admin-hover: 30 20% 94%;
+    --admin-row-hover: 30 25% 97%;
   }
 
   .dark {
