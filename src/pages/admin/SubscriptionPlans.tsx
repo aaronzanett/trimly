@@ -173,8 +173,8 @@ export default function SubscriptionPlans() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-display font-bold text-foreground">Subscription & Plans</h1>
-          <p className="text-muted-foreground mt-1">Manage subscription plans and feature flags</p>
+          <h1 className="text-3xl font-display font-bold text-[hsl(var(--admin-card-foreground))]">Subscription & Plans</h1>
+          <p className="text-[hsl(var(--admin-muted-foreground))] mt-1">Manage subscription plans and feature flags</p>
         </div>
         <Button onClick={openCreateDialog} className="bg-primary text-primary-foreground hover:bg-primary/90">
           <Plus className="w-4 h-4 mr-2" />
@@ -183,9 +183,9 @@ export default function SubscriptionPlans() {
       </div>
 
       {/* Plans Table */}
-      <Card className="bg-card border-border">
+      <Card className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
         <CardHeader>
-          <CardTitle className="text-lg font-display flex items-center gap-2">
+          <CardTitle className="text-lg font-display flex items-center gap-2 text-[hsl(var(--admin-card-foreground))]">
             <CreditCard className="w-5 h-5 text-primary" />
             Subscription Plans ({plans.length})
           </CardTitle>
@@ -193,35 +193,35 @@ export default function SubscriptionPlans() {
         <CardContent>
           <Table>
             <TableHeader>
-              <TableRow className="border-border hover:bg-transparent">
-                <TableHead className="text-muted-foreground">Plan Name</TableHead>
-                <TableHead className="text-muted-foreground">Price</TableHead>
-                <TableHead className="text-muted-foreground">Branch Limit</TableHead>
-                <TableHead className="text-muted-foreground">User Limit</TableHead>
-                <TableHead className="text-muted-foreground">Features</TableHead>
-                <TableHead className="text-muted-foreground text-right">Actions</TableHead>
+              <TableRow className="border-[hsl(var(--admin-border))] hover:bg-transparent">
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Plan Name</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Price</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Branch Limit</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">User Limit</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Features</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))] text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {plans.map((plan) => (
-                <TableRow key={plan.id} className="border-border">
+                <TableRow key={plan.id} className="border-[hsl(var(--admin-border))]">
                   <TableCell>
-                    <p className="font-medium text-foreground">{plan.name}</p>
+                    <p className="font-medium text-[hsl(var(--admin-card-foreground))]">{plan.name}</p>
                   </TableCell>
-                  <TableCell className="text-foreground">
+                  <TableCell className="text-[hsl(var(--admin-card-foreground))]">
                     ${plan.price}/{plan.billingCycle === "monthly" ? "mo" : "yr"}
                   </TableCell>
-                  <TableCell className="text-foreground">
+                  <TableCell className="text-[hsl(var(--admin-card-foreground))]">
                     {plan.branchLimit === -1 ? "Unlimited" : plan.branchLimit}
                   </TableCell>
-                  <TableCell className="text-foreground">
+                  <TableCell className="text-[hsl(var(--admin-card-foreground))]">
                     {plan.userLimit === -1 ? "Unlimited" : plan.userLimit}
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-1 flex-wrap">
                       {Object.entries(plan.features).map(([key, enabled]) =>
                         enabled ? (
-                          <Badge key={key} variant="secondary" className="text-xs">
+                          <Badge key={key} variant="secondary" className="text-xs bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))]">
                             {featureLabels[key as keyof Plan["features"]].split(" ")[0]}
                           </Badge>
                         ) : null
@@ -234,7 +234,7 @@ export default function SubscriptionPlans() {
                         variant="ghost"
                         size="sm"
                         onClick={() => openEditDialog(plan)}
-                        className="text-muted-foreground hover:text-foreground"
+                        className="text-[hsl(var(--admin-muted-foreground))] hover:text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-muted))]"
                       >
                         <Pencil className="w-4 h-4" />
                       </Button>
@@ -242,7 +242,7 @@ export default function SubscriptionPlans() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDelete(plan.id)}
-                        className="text-muted-foreground hover:text-destructive"
+                        className="text-[hsl(var(--admin-muted-foreground))] hover:text-destructive hover:bg-destructive/10"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -257,38 +257,38 @@ export default function SubscriptionPlans() {
 
       {/* Create/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="bg-card border-border max-w-lg">
+        <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))] max-w-lg">
           <DialogHeader>
-            <DialogTitle className="font-display text-xl">
+            <DialogTitle className="font-display text-xl text-[hsl(var(--admin-card-foreground))]">
               {editingPlan ? "Edit Plan" : "Create New Plan"}
             </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-foreground">Plan Name</Label>
+              <Label htmlFor="name" className="text-[hsl(var(--admin-card-foreground))]">Plan Name</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="bg-background border-border"
+                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))]"
                 placeholder="e.g. Professional"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="price" className="text-foreground">Price ($)</Label>
+                <Label htmlFor="price" className="text-[hsl(var(--admin-card-foreground))]">Price ($)</Label>
                 <Input
                   id="price"
                   type="number"
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
-                  className="bg-background border-border"
+                  className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground">Billing Cycle</Label>
+                <Label className="text-[hsl(var(--admin-card-foreground))]">Billing Cycle</Label>
                 <div className="flex gap-2">
                   <Button
                     type="button"
@@ -314,33 +314,33 @@ export default function SubscriptionPlans() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="branchLimit" className="text-foreground">Branch Limit (-1 for unlimited)</Label>
+                <Label htmlFor="branchLimit" className="text-[hsl(var(--admin-card-foreground))]">Branch Limit (-1 for unlimited)</Label>
                 <Input
                   id="branchLimit"
                   type="number"
                   value={formData.branchLimit}
                   onChange={(e) => setFormData({ ...formData, branchLimit: Number(e.target.value) })}
-                  className="bg-background border-border"
+                  className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="userLimit" className="text-foreground">User Limit (-1 for unlimited)</Label>
+                <Label htmlFor="userLimit" className="text-[hsl(var(--admin-card-foreground))]">User Limit (-1 for unlimited)</Label>
                 <Input
                   id="userLimit"
                   type="number"
                   value={formData.userLimit}
                   onChange={(e) => setFormData({ ...formData, userLimit: Number(e.target.value) })}
-                  className="bg-background border-border"
+                  className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]"
                 />
               </div>
             </div>
 
             <div className="space-y-3">
-              <Label className="text-foreground">Feature Flags</Label>
+              <Label className="text-[hsl(var(--admin-card-foreground))]">Feature Flags</Label>
               <div className="space-y-3">
                 {Object.entries(featureLabels).map(([key, label]) => (
-                  <div key={key} className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
-                    <span className="text-sm text-foreground">{label}</span>
+                  <div key={key} className="flex items-center justify-between p-2 rounded-lg bg-[hsl(var(--admin-muted))]">
+                    <span className="text-sm text-[hsl(var(--admin-card-foreground))]">{label}</span>
                     <Switch
                       checked={formData.features[key as keyof Plan["features"]]}
                       onCheckedChange={(checked) =>
@@ -357,7 +357,7 @@ export default function SubscriptionPlans() {
           </div>
 
           <DialogFooter className="mt-6">
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-muted))]">
               Cancel
             </Button>
             <Button onClick={handleSave} className="bg-primary text-primary-foreground">
