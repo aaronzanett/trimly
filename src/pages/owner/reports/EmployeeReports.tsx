@@ -64,7 +64,7 @@ export default function EmployeeReports() {
               <SelectItem value="east">East Branch</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" className="gap-2 border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
+          <Button variant="outline" className="gap-2 border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
             <Download className="w-4 h-4" />
             Export
           </Button>
