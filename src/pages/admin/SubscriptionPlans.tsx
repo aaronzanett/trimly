@@ -360,7 +360,7 @@ export default function SubscriptionPlans() {
                     variant={formData.billingCycle === "monthly" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setFormData({ ...formData, billingCycle: "monthly" })}
-                    className={`flex-1 ${formData.billingCycle !== "monthly" ? "border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]" : ""}`}
+                    className={`flex-1 ${formData.billingCycle !== "monthly" ? "border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]" : "bg-primary text-primary-foreground"}`}
                   >
                     Monthly
                   </Button>
@@ -369,7 +369,7 @@ export default function SubscriptionPlans() {
                     variant={formData.billingCycle === "yearly" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setFormData({ ...formData, billingCycle: "yearly" })}
-                    className={`flex-1 ${formData.billingCycle !== "yearly" ? "border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]" : ""}`}
+                    className={`flex-1 ${formData.billingCycle !== "yearly" ? "border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]" : "bg-primary text-primary-foreground"}`}
                   >
                     Yearly
                   </Button>
@@ -422,7 +422,7 @@ export default function SubscriptionPlans() {
           </div>
 
           <DialogFooter className="mt-6">
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
               Cancel
             </Button>
             <Button onClick={handleSave} className="bg-primary text-primary-foreground">
