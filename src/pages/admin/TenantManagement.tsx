@@ -232,7 +232,7 @@ export default function TenantManagement() {
 
       {/* Tenant Details Dialog */}
       <Dialog open={!!selectedTenant} onOpenChange={() => setSelectedTenant(null)}>
-        <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
+        <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]">
           <DialogHeader>
             <DialogTitle className="font-display text-xl text-[hsl(var(--admin-card-foreground))]">{selectedTenant?.name}</DialogTitle>
           </DialogHeader>
