@@ -134,12 +134,12 @@ export default function BusinessFinance() {
         <div className="flex gap-2">
           <Dialog open={isTransferOpen} onOpenChange={setIsTransferOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" className="gap-2 border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
+              <Button variant="outline" className="gap-2 border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
                 <ArrowRightLeft className="w-4 h-4" />
                 Transfer
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
+            <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]">
               <DialogHeader>
                 <DialogTitle className="text-[hsl(var(--admin-card-foreground))]">
                   Cash Transfer Between Branches
@@ -193,7 +193,7 @@ export default function BusinessFinance() {
                   <Button
                     variant="outline"
                     onClick={() => setIsTransferOpen(false)}
-                    className="border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]"
+                    className="border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]"
                   >
                     Cancel
                   </Button>
@@ -210,7 +210,7 @@ export default function BusinessFinance() {
                 Adjustment
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
+            <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]">
               <DialogHeader>
                 <DialogTitle className="text-[hsl(var(--admin-card-foreground))]">
                   Balance Adjustment
@@ -263,7 +263,7 @@ export default function BusinessFinance() {
                   <Button
                     variant="outline"
                     onClick={() => setIsAdjustmentOpen(false)}
-                    className="border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]"
+                    className="border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]"
                   >
                     Cancel
                   </Button>

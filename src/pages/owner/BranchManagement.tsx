@@ -85,7 +85,7 @@ export default function BranchManagement() {
               Add Branch
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
+          <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]">
             <DialogHeader>
               <DialogTitle className="text-[hsl(var(--admin-card-foreground))]">
                 Add New Branch
@@ -147,7 +147,7 @@ export default function BranchManagement() {
                 <Button
                   variant="outline"
                   onClick={() => setIsDialogOpen(false)}
-                  className="border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]"
+                  className="border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]"
                 >
                   Cancel
                 </Button>
