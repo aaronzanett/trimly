@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -18,61 +19,52 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Users, Plus, Pencil, Trash2, MessageCircle, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { AdminPagination } from "@/components/admin/AdminPagination";
+
+type UserRole = "super_admin" | "finance" | "support";
 
 interface PlatformUser {
   id: string;
   name: string;
   email: string;
   phone: string;
+  role: UserRole;
   createdAt: string;
 }
 
+const roleLabels: Record<UserRole, string> = {
+  super_admin: "Super Admin",
+  finance: "Finance",
+  support: "Support",
+};
+
+const getRoleBadgeStyle = (role: UserRole) => {
+  switch (role) {
+    case "super_admin":
+      return "bg-purple-100 text-purple-700 hover:bg-purple-100";
+    case "finance":
+      return "bg-blue-100 text-blue-700 hover:bg-blue-100";
+    case "support":
+      return "bg-green-100 text-green-700 hover:bg-green-100";
+  }
+};
+
 const initialUsers: PlatformUser[] = [
-  {
-    id: "1",
-    name: "John Smith",
-    email: "john.smith@trimly.com",
-    phone: "+1234567890",
-    createdAt: "2024-01-10",
-  },
-  {
-    id: "2",
-    name: "Sarah Johnson",
-    email: "sarah.j@trimly.com",
-    phone: "+1987654321",
-    createdAt: "2024-02-15",
-  },
-  {
-    id: "3",
-    name: "Michael Chen",
-    email: "m.chen@trimly.com",
-    phone: "+1122334455",
-    createdAt: "2024-03-20",
-  },
-  {
-    id: "4",
-    name: "Emily Davis",
-    email: "emily.d@trimly.com",
-    phone: "+1555666777",
-    createdAt: "2024-04-05",
-  },
-  {
-    id: "5",
-    name: "James Wilson",
-    email: "j.wilson@trimly.com",
-    phone: "+1888999000",
-    createdAt: "2024-05-12",
-  },
-  {
-    id: "6",
-    name: "Lisa Anderson",
-    email: "lisa.a@trimly.com",
-    phone: "+1444555666",
-    createdAt: "2024-06-18",
-  },
+  { id: "1", name: "John Smith", email: "john.smith@trimly.com", phone: "+1234567890", role: "super_admin", createdAt: "2024-01-10" },
+  { id: "2", name: "Sarah Johnson", email: "sarah.j@trimly.com", phone: "+1987654321", role: "finance", createdAt: "2024-02-15" },
+  { id: "3", name: "Michael Chen", email: "m.chen@trimly.com", phone: "+1122334455", role: "support", createdAt: "2024-03-20" },
+  { id: "4", name: "Emily Davis", email: "emily.d@trimly.com", phone: "+1555666777", role: "finance", createdAt: "2024-04-05" },
+  { id: "5", name: "James Wilson", email: "j.wilson@trimly.com", phone: "+1888999000", role: "support", createdAt: "2024-05-12" },
+  { id: "6", name: "Lisa Anderson", email: "lisa.a@trimly.com", phone: "+1444555666", role: "super_admin", createdAt: "2024-06-18" },
 ];
 
 const ITEMS_PER_PAGE = 5;
@@ -89,6 +81,7 @@ export default function PlatformUsers() {
     email: "",
     phone: "",
     password: "",
+    role: "support" as UserRole,
   });
 
   const filteredUsers = users.filter(
@@ -105,7 +98,7 @@ export default function PlatformUsers() {
 
   const openCreateDialog = () => {
     setEditingUser(null);
-    setFormData({ name: "", email: "", phone: "", password: "" });
+    setFormData({ name: "", email: "", phone: "", password: "", role: "support" });
     setIsDialogOpen(true);
   };
 
@@ -116,6 +109,7 @@ export default function PlatformUsers() {
       email: user.email,
       phone: user.phone,
       password: "",
+      role: user.role,
     });
     setIsDialogOpen(true);
   };
@@ -135,7 +129,7 @@ export default function PlatformUsers() {
       setUsers(
         users.map((u) =>
           u.id === editingUser.id
-            ? { ...u, name: formData.name, email: formData.email, phone: formData.phone }
+            ? { ...u, name: formData.name, email: formData.email, phone: formData.phone, role: formData.role }
             : u
         )
       );
@@ -146,6 +140,7 @@ export default function PlatformUsers() {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
+        role: formData.role,
         createdAt: new Date().toISOString().split("T")[0],
       };
       setUsers([...users, newUser]);
@@ -215,6 +210,7 @@ export default function PlatformUsers() {
               <TableRow className="border-[hsl(var(--admin-border))] hover:bg-transparent">
                 <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Name</TableHead>
                 <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Email</TableHead>
+                <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Role</TableHead>
                 <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Phone</TableHead>
                 <TableHead className="text-[hsl(var(--admin-muted-foreground))]">Created</TableHead>
                 <TableHead className="text-[hsl(var(--admin-muted-foreground))] text-right">Actions</TableHead>
@@ -225,6 +221,11 @@ export default function PlatformUsers() {
                 <TableRow key={user.id} className="border-[hsl(var(--admin-border))] hover:bg-[hsl(var(--admin-row-hover))]">
                   <TableCell className="font-medium text-[hsl(var(--admin-card-foreground))]">{user.name}</TableCell>
                   <TableCell className="text-[hsl(var(--admin-card-foreground))]">{user.email}</TableCell>
+                  <TableCell>
+                    <Badge variant="secondary" className={getRoleBadgeStyle(user.role)}>
+                      {roleLabels[user.role]}
+                    </Badge>
+                  </TableCell>
                   <TableCell className="text-[hsl(var(--admin-card-foreground))]">{user.phone}</TableCell>
                   <TableCell className="text-[hsl(var(--admin-muted-foreground))]">{user.createdAt}</TableCell>
                   <TableCell className="text-right">
@@ -302,15 +303,34 @@ export default function PlatformUsers() {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="phone" className="text-[hsl(var(--admin-card-foreground))]">Phone (with country code)</Label>
-              <Input
-                id="phone"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))] focus-visible:border-primary"
-                placeholder="+1234567890"
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="phone" className="text-[hsl(var(--admin-card-foreground))]">Phone (with country code)</Label>
+                <Input
+                  id="phone"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))] focus-visible:border-primary"
+                  placeholder="+1234567890"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-[hsl(var(--admin-card-foreground))]">Role</Label>
+                <Select
+                  value={formData.role}
+                  onValueChange={(value: UserRole) => setFormData({ ...formData, role: value })}
+                >
+                  <SelectTrigger className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]">
+                    <SelectValue placeholder="Select role" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
+                    <SelectItem value="super_admin">Super Admin</SelectItem>
+                    <SelectItem value="finance">Finance</SelectItem>
+                    <SelectItem value="support">Support</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <div className="space-y-2">
