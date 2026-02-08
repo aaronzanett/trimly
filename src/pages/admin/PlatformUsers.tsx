@@ -271,7 +271,7 @@ export default function PlatformUsers() {
 
       {/* Create/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
+        <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]">
           <DialogHeader>
             <DialogTitle className="font-display text-xl text-[hsl(var(--admin-card-foreground))]">
               {editingUser ? "Edit User" : "Add New User"}

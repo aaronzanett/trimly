@@ -322,7 +322,7 @@ export default function SubscriptionPlans() {
 
       {/* Create/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))] max-w-lg">
+        <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] max-w-lg">
           <DialogHeader>
             <DialogTitle className="font-display text-xl text-[hsl(var(--admin-card-foreground))]">
               {editingPlan ? "Edit Plan" : "Create New Plan"}
