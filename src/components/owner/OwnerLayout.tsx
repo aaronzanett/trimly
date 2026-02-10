@@ -5,7 +5,7 @@ import { OwnerSidebar } from "./OwnerSidebar";
 export function OwnerLayout() {
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-[hsl(var(--admin-background))]">
+      <div className="min-h-screen min-w-full flex bg-[hsl(var(--admin-background))]">
         <OwnerSidebar />
         <main className="flex-1 flex flex-col">
           <header className="h-14 border-b border-[hsl(var(--admin-border))] flex items-center px-4 bg-[hsl(var(--admin-card))]">
