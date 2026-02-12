@@ -1,4 +1,4 @@
-import { LayoutDashboard, Building2, CreditCard, Users, LogOut, Shield } from "lucide-react";
+import { LayoutDashboard, Building2, CreditCard, Users, LogOut, Shield, Receipt, Settings } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
@@ -20,6 +20,8 @@ const menuItems = [
   { title: "Tenant Management", url: "/admin/tenants", icon: Building2 },
   { title: "Subscription & Plans", url: "/admin/subscriptions", icon: CreditCard },
   { title: "Platform Users", url: "/admin/users", icon: Users },
+  { title: "Billing Monitor", url: "/admin/billing", icon: Receipt },
+  { title: "System Control", url: "/admin/system", icon: Settings },
 ];
 
 export function AdminSidebar() {
