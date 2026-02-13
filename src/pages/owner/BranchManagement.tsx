@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Building2, Plus, Edit2, Trash2, Clock, Armchair, Search, MoreHorizontal } from "lucide-react";
+import { Building2, Plus, Edit2, Trash2, Clock, Armchair, Search, MoreHorizontal, Download } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -108,10 +108,24 @@ export default function BranchManagement() {
           <h1 className="text-2xl font-display font-bold text-[hsl(var(--admin-card-foreground))]">Branch Management</h1>
           <p className="text-[hsl(var(--admin-muted-foreground))]">Manage your barbershop branches</p>
         </div>
-        <Button className="gap-2" onClick={openAdd}>
-          <Plus className="w-4 h-4" />
-          Add Branch
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" className="gap-2 border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]" onClick={() => {
+            const headers = ["Name", "Address", "Phone", "Open", "Close", "Chairs", "Status"];
+            const rows = branches.map((b) => [b.name, b.address, b.phone, b.openTime, b.closeTime, b.chairs, b.status]);
+            const csv = [headers, ...rows].map((r) => r.join(",")).join("\n");
+            const blob = new Blob([csv], { type: "text/csv" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a"); a.href = url; a.download = "branches.csv"; a.click();
+            URL.revokeObjectURL(url);
+            toast({ title: "Exported", description: "Branch data exported as CSV." });
+          }}>
+            <Download className="w-4 h-4" /> Export
+          </Button>
+          <Button className="gap-2" onClick={openAdd}>
+            <Plus className="w-4 h-4" />
+            Add Branch
+          </Button>
+        </div>
       </div>
 
       <Card className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
