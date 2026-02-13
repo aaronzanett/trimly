@@ -21,14 +21,22 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 
 const mockEmployeeData = [
-  { name: "Ahmad Fauzi", branch: "Central", services: 142, revenue: 8500000, commission: 2550000, rating: 4.9, attendance: 98 },
-  { name: "Budi Santoso", branch: "West", services: 128, revenue: 7200000, commission: 2160000, rating: 4.8, attendance: 95 },
-  { name: "Candra Wijaya", branch: "Central", services: 115, revenue: 6800000, commission: 2040000, rating: 4.7, attendance: 100 },
-  { name: "Deni Kurniawan", branch: "East", services: 98, revenue: 5900000, commission: 1770000, rating: 4.6, attendance: 92 },
-  { name: "Gita Permata", branch: "East", services: 85, revenue: 4800000, commission: 1440000, rating: 4.5, attendance: 88 },
+  { name: "Ahmad Fauzi", branch: "central", services: 142, revenue: 8500000, commission: 2550000, rating: 4.9, attendance: 98 },
+  { name: "Budi Santoso", branch: "west", services: 128, revenue: 7200000, commission: 2160000, rating: 4.8, attendance: 95 },
+  { name: "Candra Wijaya", branch: "central", services: 115, revenue: 6800000, commission: 2040000, rating: 4.7, attendance: 100 },
+  { name: "Deni Kurniawan", branch: "east", services: 98, revenue: 5900000, commission: 1770000, rating: 4.6, attendance: 92 },
+  { name: "Gita Permata", branch: "east", services: 85, revenue: 4800000, commission: 1440000, rating: 4.5, attendance: 88 },
 ];
 
+const branchLabels: Record<string, string> = {
+  central: "Central",
+  west: "West",
+  east: "East",
+};
+
 export default function EmployeeReports() {
+  const [selectedBranch, setSelectedBranch] = useState("all");
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -37,9 +45,36 @@ export default function EmployeeReports() {
     }).format(amount);
   };
 
-  const totalServices = mockEmployeeData.reduce((sum, e) => sum + e.services, 0);
-  const totalRevenue = mockEmployeeData.reduce((sum, e) => sum + e.revenue, 0);
-  const avgRating = (mockEmployeeData.reduce((sum, e) => sum + e.rating, 0) / mockEmployeeData.length).toFixed(1);
+  const filteredData = selectedBranch === "all"
+    ? mockEmployeeData
+    : mockEmployeeData.filter((e) => e.branch === selectedBranch);
+
+  const totalServices = filteredData.reduce((sum, e) => sum + e.services, 0);
+  const totalRevenue = filteredData.reduce((sum, e) => sum + e.revenue, 0);
+  const avgRating = filteredData.length > 0
+    ? (filteredData.reduce((sum, e) => sum + e.rating, 0) / filteredData.length).toFixed(1)
+    : "0";
+
+  const handleExport = () => {
+    const headers = ["Employee", "Branch", "Services", "Revenue", "Commission", "Rating", "Attendance"];
+    const rows = filteredData.map((e) => [
+      e.name,
+      branchLabels[e.branch] || e.branch,
+      e.services,
+      e.revenue,
+      e.commission,
+      e.rating,
+      e.attendance + "%",
+    ]);
+    const csv = [headers, ...rows].map((r) => r.join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "employee-report.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="space-y-6">
@@ -53,7 +88,7 @@ export default function EmployeeReports() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Select defaultValue="all">
+          <Select value={selectedBranch} onValueChange={setSelectedBranch}>
             <SelectTrigger className="w-40 bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]">
               <SelectValue placeholder="Select branch" />
             </SelectTrigger>
@@ -64,7 +99,7 @@ export default function EmployeeReports() {
               <SelectItem value="east">East Branch</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" className="gap-2 border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
+          <Button onClick={handleExport} variant="outline" className="gap-2 border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
             <Download className="w-4 h-4" />
             Export
           </Button>
@@ -82,9 +117,11 @@ export default function EmployeeReports() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-[hsl(var(--admin-card-foreground))]">
-              {mockEmployeeData.length}
+              {filteredData.length}
             </div>
-            <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">Across all branches</p>
+            <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">
+              {selectedBranch === "all" ? "Across all branches" : branchLabels[selectedBranch] + " Branch"}
+            </p>
           </CardContent>
         </Card>
 
@@ -154,51 +191,59 @@ export default function EmployeeReports() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockEmployeeData.map((employee, index) => (
-                <TableRow
-                  key={employee.name}
-                  className="border-[hsl(var(--admin-border))] hover:bg-[hsl(var(--admin-row-hover))]"
-                >
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      {index < 3 && (
-                        <Badge className="bg-primary/10 text-primary hover:bg-primary/10">
-                          #{index + 1}
-                        </Badge>
-                      )}
-                      <span className="font-medium text-[hsl(var(--admin-card-foreground))]">
-                        {employee.name}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-[hsl(var(--admin-card-foreground))]">
-                    {employee.branch}
-                  </TableCell>
-                  <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
-                    {employee.services}
-                  </TableCell>
-                  <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
-                    {formatCurrency(employee.revenue)}
-                  </TableCell>
-                  <TableCell className="text-right text-primary font-medium">
-                    {formatCurrency(employee.commission)}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[hsl(var(--admin-card-foreground))]">{employee.rating}</span>
-                      <span className="text-amber-500">★</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2 min-w-[120px]">
-                      <Progress value={employee.attendance} className="h-2 flex-1" />
-                      <span className="text-xs text-[hsl(var(--admin-muted-foreground))] w-10">
-                        {employee.attendance}%
-                      </span>
-                    </div>
+              {filteredData.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={7} className="text-center text-[hsl(var(--admin-muted-foreground))] py-8">
+                    No employees for selected branch
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                filteredData.map((employee, index) => (
+                  <TableRow
+                    key={employee.name}
+                    className="border-[hsl(var(--admin-border))] hover:bg-[hsl(var(--admin-row-hover))]"
+                  >
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        {index < 3 && (
+                          <Badge className="bg-primary/10 text-primary hover:bg-primary/10">
+                            #{index + 1}
+                          </Badge>
+                        )}
+                        <span className="font-medium text-[hsl(var(--admin-card-foreground))]">
+                          {employee.name}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-[hsl(var(--admin-card-foreground))]">
+                      {branchLabels[employee.branch] || employee.branch}
+                    </TableCell>
+                    <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
+                      {employee.services}
+                    </TableCell>
+                    <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
+                      {formatCurrency(employee.revenue)}
+                    </TableCell>
+                    <TableCell className="text-right text-primary font-medium">
+                      {formatCurrency(employee.commission)}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[hsl(var(--admin-card-foreground))]">{employee.rating}</span>
+                        <span className="text-amber-500">★</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2 min-w-[120px]">
+                        <Progress value={employee.attendance} className="h-2 flex-1" />
+                        <span className="text-xs text-[hsl(var(--admin-muted-foreground))] w-10">
+                          {employee.attendance}%
+                        </span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </CardContent>

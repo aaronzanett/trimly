@@ -19,25 +19,19 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 
-const mockProductData = {
-  summary: {
-    totalProducts: 7,
-    totalStock: 118,
-    lowStockItems: 2,
-    totalValue: 6892000,
-  },
-  products: [
-    { name: "Premium Pomade", sold: 48, stock: 24, revenue: 4080000, profit: 1920000, margin: 47 },
-    { name: "Hair Wax", sold: 35, stock: 18, revenue: 2625000, profit: 1295000, margin: 49 },
-    { name: "Beard Oil", sold: 28, stock: 15, revenue: 2660000, profit: 1316000, margin: 49 },
-    { name: "Shampoo", sold: 42, stock: 30, revenue: 2310000, profit: 1260000, margin: 55 },
-    { name: "Conditioner", sold: 38, stock: 28, revenue: 2090000, profit: 1140000, margin: 55 },
-    { name: "Hair Tonic", sold: 22, stock: 3, revenue: 1430000, profit: 726000, margin: 51 },
-    { name: "Clay Pomade", sold: 0, stock: 0, revenue: 0, profit: 0, margin: 0 },
-  ],
-};
+const mockProductData = [
+  { name: "Premium Pomade", sold: 48, stock: 24, revenue: 4080000, profit: 1920000, margin: 47, branch: "central" },
+  { name: "Hair Wax", sold: 35, stock: 18, revenue: 2625000, profit: 1295000, margin: 49, branch: "west" },
+  { name: "Beard Oil", sold: 28, stock: 15, revenue: 2660000, profit: 1316000, margin: 49, branch: "east" },
+  { name: "Shampoo", sold: 42, stock: 30, revenue: 2310000, profit: 1260000, margin: 55, branch: "central" },
+  { name: "Conditioner", sold: 38, stock: 28, revenue: 2090000, profit: 1140000, margin: 55, branch: "west" },
+  { name: "Hair Tonic", sold: 22, stock: 3, revenue: 1430000, profit: 726000, margin: 51, branch: "east" },
+  { name: "Clay Pomade", sold: 0, stock: 0, revenue: 0, profit: 0, margin: 0, branch: "central" },
+];
 
 export default function ProductReports() {
+  const [selectedBranch, setSelectedBranch] = useState("all");
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -46,8 +40,14 @@ export default function ProductReports() {
     }).format(amount);
   };
 
-  const totalRevenue = mockProductData.products.reduce((sum, p) => sum + p.revenue, 0);
-  const totalProfit = mockProductData.products.reduce((sum, p) => sum + p.profit, 0);
+  const filteredProducts = selectedBranch === "all"
+    ? mockProductData
+    : mockProductData.filter((p) => p.branch === selectedBranch);
+
+  const totalRevenue = filteredProducts.reduce((sum, p) => sum + p.revenue, 0);
+  const totalProfit = filteredProducts.reduce((sum, p) => sum + p.profit, 0);
+  const totalStock = filteredProducts.reduce((sum, p) => sum + p.stock, 0);
+  const lowStockItems = filteredProducts.filter((p) => p.stock > 0 && p.stock <= 5).length;
 
   const getStockBadge = (stock: number) => {
     if (stock === 0) {
@@ -63,6 +63,26 @@ export default function ProductReports() {
     return <span className="text-[hsl(var(--admin-card-foreground))]">{stock} units</span>;
   };
 
+  const handleExport = () => {
+    const headers = ["Product", "Sold", "Stock", "Revenue", "Profit", "Margin"];
+    const rows = filteredProducts.map((p) => [
+      p.name,
+      p.sold,
+      p.stock,
+      p.revenue,
+      p.profit,
+      p.margin + "%",
+    ]);
+    const csv = [headers, ...rows].map((r) => r.join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "product-report.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -75,7 +95,7 @@ export default function ProductReports() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Select defaultValue="all">
+          <Select value={selectedBranch} onValueChange={setSelectedBranch}>
             <SelectTrigger className="w-40 bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]">
               <SelectValue placeholder="Select branch" />
             </SelectTrigger>
@@ -86,7 +106,7 @@ export default function ProductReports() {
               <SelectItem value="east">East Branch</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" className="gap-2 border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
+          <Button onClick={handleExport} variant="outline" className="gap-2 border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
             <Download className="w-4 h-4" />
             Export
           </Button>
@@ -104,7 +124,7 @@ export default function ProductReports() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-[hsl(var(--admin-card-foreground))]">
-              {mockProductData.summary.totalProducts}
+              {filteredProducts.length}
             </div>
             <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">Active SKUs</p>
           </CardContent>
@@ -119,7 +139,7 @@ export default function ProductReports() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-[hsl(var(--admin-card-foreground))]">
-              {mockProductData.summary.totalStock}
+              {totalStock}
             </div>
             <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">Units available</p>
           </CardContent>
@@ -149,7 +169,7 @@ export default function ProductReports() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-amber-500">
-              {mockProductData.summary.lowStockItems}
+              {lowStockItems}
             </div>
             <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">Items need restock</p>
           </CardContent>
@@ -177,33 +197,41 @@ export default function ProductReports() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockProductData.products.map((product) => (
-                <TableRow
-                  key={product.name}
-                  className="border-[hsl(var(--admin-border))] hover:bg-[hsl(var(--admin-row-hover))]"
-                >
-                  <TableCell className="font-medium text-[hsl(var(--admin-card-foreground))]">
-                    {product.name}
-                  </TableCell>
-                  <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
-                    {product.sold}
-                  </TableCell>
-                  <TableCell>{getStockBadge(product.stock)}</TableCell>
-                  <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
-                    {formatCurrency(product.revenue)}
-                  </TableCell>
-                  <TableCell className="text-right text-primary font-medium">
-                    {formatCurrency(product.profit)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {product.margin > 0 ? (
-                      <span className="text-primary font-medium">{product.margin}%</span>
-                    ) : (
-                      <span className="text-[hsl(var(--admin-muted-foreground))]">-</span>
-                    )}
+              {filteredProducts.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center text-[hsl(var(--admin-muted-foreground))] py-8">
+                    No products for selected branch
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                filteredProducts.map((product) => (
+                  <TableRow
+                    key={product.name}
+                    className="border-[hsl(var(--admin-border))] hover:bg-[hsl(var(--admin-row-hover))]"
+                  >
+                    <TableCell className="font-medium text-[hsl(var(--admin-card-foreground))]">
+                      {product.name}
+                    </TableCell>
+                    <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
+                      {product.sold}
+                    </TableCell>
+                    <TableCell>{getStockBadge(product.stock)}</TableCell>
+                    <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
+                      {formatCurrency(product.revenue)}
+                    </TableCell>
+                    <TableCell className="text-right text-primary font-medium">
+                      {formatCurrency(product.profit)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {product.margin > 0 ? (
+                        <span className="text-primary font-medium">{product.margin}%</span>
+                      ) : (
+                        <span className="text-[hsl(var(--admin-muted-foreground))]">-</span>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </CardContent>
@@ -231,7 +259,7 @@ export default function ProductReports() {
             <div className="p-4 rounded-lg bg-primary/10">
               <p className="text-sm text-primary">Average Margin</p>
               <p className="text-xl font-bold text-primary">
-                {((totalProfit / totalRevenue) * 100).toFixed(1)}%
+                {totalRevenue > 0 ? ((totalProfit / totalRevenue) * 100).toFixed(1) : 0}%
               </p>
             </div>
           </div>

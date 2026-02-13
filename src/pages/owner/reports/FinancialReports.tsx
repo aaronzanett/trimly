@@ -19,14 +19,16 @@ import {
 } from "@/components/ui/table";
 
 const mockFinancialData = [
-  { month: "January 2025", revenue: 48500000, expenses: 18200000, profit: 30300000 },
-  { month: "December 2024", revenue: 52300000, expenses: 19800000, profit: 32500000 },
-  { month: "November 2024", revenue: 45600000, expenses: 17500000, profit: 28100000 },
-  { month: "October 2024", revenue: 43200000, expenses: 16800000, profit: 26400000 },
-  { month: "September 2024", revenue: 41800000, expenses: 16200000, profit: 25600000 },
+  { month: "January 2025", branch: "central", revenue: 48500000, expenses: 18200000, profit: 30300000 },
+  { month: "December 2024", branch: "west", revenue: 52300000, expenses: 19800000, profit: 32500000 },
+  { month: "November 2024", branch: "central", revenue: 45600000, expenses: 17500000, profit: 28100000 },
+  { month: "October 2024", branch: "east", revenue: 43200000, expenses: 16800000, profit: 26400000 },
+  { month: "September 2024", branch: "west", revenue: 41800000, expenses: 16200000, profit: 25600000 },
 ];
 
 export default function FinancialReports() {
+  const [selectedBranch, setSelectedBranch] = useState("all");
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -35,9 +37,32 @@ export default function FinancialReports() {
     }).format(amount);
   };
 
-  const totalRevenue = mockFinancialData.reduce((sum, d) => sum + d.revenue, 0);
-  const totalExpenses = mockFinancialData.reduce((sum, d) => sum + d.expenses, 0);
-  const totalProfit = mockFinancialData.reduce((sum, d) => sum + d.profit, 0);
+  const filteredData = selectedBranch === "all"
+    ? mockFinancialData
+    : mockFinancialData.filter((d) => d.branch === selectedBranch);
+
+  const totalRevenue = filteredData.reduce((sum, d) => sum + d.revenue, 0);
+  const totalExpenses = filteredData.reduce((sum, d) => sum + d.expenses, 0);
+  const totalProfit = filteredData.reduce((sum, d) => sum + d.profit, 0);
+
+  const handleExport = () => {
+    const headers = ["Period", "Revenue", "Expenses", "Profit", "Margin"];
+    const rows = filteredData.map((row) => [
+      row.month,
+      row.revenue,
+      row.expenses,
+      row.profit,
+      ((row.profit / row.revenue) * 100).toFixed(1) + "%",
+    ]);
+    const csv = [headers, ...rows].map((r) => r.join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "financial-report.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="space-y-6">
@@ -51,7 +76,7 @@ export default function FinancialReports() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Select defaultValue="all">
+          <Select value={selectedBranch} onValueChange={setSelectedBranch}>
             <SelectTrigger className="w-40 bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]">
               <SelectValue placeholder="Select branch" />
             </SelectTrigger>
@@ -62,7 +87,7 @@ export default function FinancialReports() {
               <SelectItem value="east">East Branch</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" className="gap-2 border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
+          <Button onClick={handleExport} variant="outline" className="gap-2 border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
             <Download className="w-4 h-4" />
             Export
           </Button>
@@ -82,7 +107,9 @@ export default function FinancialReports() {
             <div className="text-2xl font-bold text-[hsl(var(--admin-card-foreground))]">
               {formatCurrency(totalRevenue)}
             </div>
-            <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">Last 5 months</p>
+            <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">
+              {filteredData.length} months
+            </p>
           </CardContent>
         </Card>
 
@@ -97,7 +124,9 @@ export default function FinancialReports() {
             <div className="text-2xl font-bold text-[hsl(var(--admin-card-foreground))]">
               {formatCurrency(totalExpenses)}
             </div>
-            <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">Last 5 months</p>
+            <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">
+              {filteredData.length} months
+            </p>
           </CardContent>
         </Card>
 
@@ -113,7 +142,7 @@ export default function FinancialReports() {
               {formatCurrency(totalProfit)}
             </div>
             <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">
-              {((totalProfit / totalRevenue) * 100).toFixed(1)}% margin
+              {totalRevenue > 0 ? ((totalProfit / totalRevenue) * 100).toFixed(1) : 0}% margin
             </p>
           </CardContent>
         </Card>
@@ -139,28 +168,36 @@ export default function FinancialReports() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockFinancialData.map((row) => (
-                <TableRow
-                  key={row.month}
-                  className="border-[hsl(var(--admin-border))] hover:bg-[hsl(var(--admin-row-hover))]"
-                >
-                  <TableCell className="font-medium text-[hsl(var(--admin-card-foreground))]">
-                    {row.month}
-                  </TableCell>
-                  <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
-                    {formatCurrency(row.revenue)}
-                  </TableCell>
-                  <TableCell className="text-right text-destructive">
-                    {formatCurrency(row.expenses)}
-                  </TableCell>
-                  <TableCell className="text-right text-primary font-medium">
-                    {formatCurrency(row.profit)}
-                  </TableCell>
-                  <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
-                    {((row.profit / row.revenue) * 100).toFixed(1)}%
+              {filteredData.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center text-[hsl(var(--admin-muted-foreground))] py-8">
+                    No data for selected branch
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                filteredData.map((row) => (
+                  <TableRow
+                    key={row.month}
+                    className="border-[hsl(var(--admin-border))] hover:bg-[hsl(var(--admin-row-hover))]"
+                  >
+                    <TableCell className="font-medium text-[hsl(var(--admin-card-foreground))]">
+                      {row.month}
+                    </TableCell>
+                    <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
+                      {formatCurrency(row.revenue)}
+                    </TableCell>
+                    <TableCell className="text-right text-destructive">
+                      {formatCurrency(row.expenses)}
+                    </TableCell>
+                    <TableCell className="text-right text-primary font-medium">
+                      {formatCurrency(row.profit)}
+                    </TableCell>
+                    <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
+                      {((row.profit / row.revenue) * 100).toFixed(1)}%
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </CardContent>
