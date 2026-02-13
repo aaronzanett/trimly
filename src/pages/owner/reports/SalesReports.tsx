@@ -21,29 +21,31 @@ import { Badge } from "@/components/ui/badge";
 
 const mockSalesData = {
   topServices: [
-    { name: "Regular Haircut", sales: 342, revenue: 17100000 },
-    { name: "Premium Haircut", sales: 186, revenue: 15810000 },
-    { name: "Beard Trim", sales: 158, revenue: 5530000 },
-    { name: "Hair Coloring", sales: 45, revenue: 6750000 },
-    { name: "Hair Treatment", sales: 38, revenue: 4560000 },
+    { name: "Regular Haircut", sales: 342, revenue: 17100000, branch: "central" },
+    { name: "Premium Haircut", sales: 186, revenue: 15810000, branch: "west" },
+    { name: "Beard Trim", sales: 158, revenue: 5530000, branch: "central" },
+    { name: "Hair Coloring", sales: 45, revenue: 6750000, branch: "east" },
+    { name: "Hair Treatment", sales: 38, revenue: 4560000, branch: "west" },
   ],
   topProducts: [
-    { name: "Premium Pomade", sales: 48, revenue: 4080000 },
-    { name: "Hair Wax", sales: 35, revenue: 2625000 },
-    { name: "Beard Oil", sales: 28, revenue: 2660000 },
-    { name: "Shampoo", sales: 42, revenue: 2310000 },
-    { name: "Hair Tonic", sales: 22, revenue: 1430000 },
+    { name: "Premium Pomade", sales: 48, revenue: 4080000, branch: "central" },
+    { name: "Hair Wax", sales: 35, revenue: 2625000, branch: "west" },
+    { name: "Beard Oil", sales: 28, revenue: 2660000, branch: "east" },
+    { name: "Shampoo", sales: 42, revenue: 2310000, branch: "central" },
+    { name: "Hair Tonic", sales: 22, revenue: 1430000, branch: "west" },
   ],
   dailySales: [
-    { date: "15 Jan 2025", services: 45, products: 12, total: 3850000 },
-    { date: "14 Jan 2025", services: 52, products: 8, total: 4120000 },
-    { date: "13 Jan 2025", services: 38, products: 15, total: 3450000 },
-    { date: "12 Jan 2025", services: 61, products: 10, total: 4890000 },
-    { date: "11 Jan 2025", services: 48, products: 7, total: 3680000 },
+    { date: "15 Jan 2025", services: 45, products: 12, total: 3850000, branch: "central" },
+    { date: "14 Jan 2025", services: 52, products: 8, total: 4120000, branch: "west" },
+    { date: "13 Jan 2025", services: 38, products: 15, total: 3450000, branch: "central" },
+    { date: "12 Jan 2025", services: 61, products: 10, total: 4890000, branch: "east" },
+    { date: "11 Jan 2025", services: 48, products: 7, total: 3680000, branch: "west" },
   ],
 };
 
 export default function SalesReports() {
+  const [selectedBranch, setSelectedBranch] = useState("all");
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -52,8 +54,28 @@ export default function SalesReports() {
     }).format(amount);
   };
 
-  const totalServiceRevenue = mockSalesData.topServices.reduce((sum, s) => sum + s.revenue, 0);
-  const totalProductRevenue = mockSalesData.topProducts.reduce((sum, p) => sum + p.revenue, 0);
+  const filterByBranch = <T extends { branch: string }>(data: T[]) =>
+    selectedBranch === "all" ? data : data.filter((d) => d.branch === selectedBranch);
+
+  const filteredServices = filterByBranch(mockSalesData.topServices);
+  const filteredProducts = filterByBranch(mockSalesData.topProducts);
+  const filteredDaily = filterByBranch(mockSalesData.dailySales);
+
+  const totalServiceRevenue = filteredServices.reduce((sum, s) => sum + s.revenue, 0);
+  const totalProductRevenue = filteredProducts.reduce((sum, p) => sum + p.revenue, 0);
+
+  const handleExport = () => {
+    const headers = ["Date", "Services", "Products", "Total Revenue"];
+    const rows = filteredDaily.map((d) => [d.date, d.services, d.products, d.total]);
+    const csv = [headers, ...rows].map((r) => r.join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "sales-report.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="space-y-6">
@@ -67,7 +89,7 @@ export default function SalesReports() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Select defaultValue="all">
+          <Select value={selectedBranch} onValueChange={setSelectedBranch}>
             <SelectTrigger className="w-40 bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]">
               <SelectValue placeholder="Select branch" />
             </SelectTrigger>
@@ -78,7 +100,7 @@ export default function SalesReports() {
               <SelectItem value="east">East Branch</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" className="gap-2 border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
+          <Button onClick={handleExport} variant="outline" className="gap-2 border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-muted))] text-[hsl(var(--admin-card-foreground))] hover:bg-[hsl(var(--admin-hover))]">
             <Download className="w-4 h-4" />
             Export
           </Button>
@@ -99,7 +121,7 @@ export default function SalesReports() {
               {formatCurrency(totalServiceRevenue)}
             </div>
             <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">
-              {mockSalesData.topServices.reduce((sum, s) => sum + s.sales, 0)} services completed
+              {filteredServices.reduce((sum, s) => sum + s.sales, 0)} services completed
             </p>
           </CardContent>
         </Card>
@@ -116,7 +138,7 @@ export default function SalesReports() {
               {formatCurrency(totalProductRevenue)}
             </div>
             <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">
-              {mockSalesData.topProducts.reduce((sum, p) => sum + p.sales, 0)} products sold
+              {filteredProducts.reduce((sum, p) => sum + p.sales, 0)} products sold
             </p>
           </CardContent>
         </Card>
@@ -141,7 +163,7 @@ export default function SalesReports() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {mockSalesData.topServices.map((service, index) => (
+                {filteredServices.map((service, index) => (
                   <TableRow
                     key={service.name}
                     className="border-[hsl(var(--admin-border))] hover:bg-[hsl(var(--admin-row-hover))]"
@@ -185,7 +207,7 @@ export default function SalesReports() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {mockSalesData.topProducts.map((product, index) => (
+                {filteredProducts.map((product, index) => (
                   <TableRow
                     key={product.name}
                     className="border-[hsl(var(--admin-border))] hover:bg-[hsl(var(--admin-row-hover))]"
@@ -231,25 +253,33 @@ export default function SalesReports() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockSalesData.dailySales.map((day) => (
-                <TableRow
-                  key={day.date}
-                  className="border-[hsl(var(--admin-border))] hover:bg-[hsl(var(--admin-row-hover))]"
-                >
-                  <TableCell className="font-medium text-[hsl(var(--admin-card-foreground))]">
-                    {day.date}
-                  </TableCell>
-                  <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
-                    {day.services}
-                  </TableCell>
-                  <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
-                    {day.products}
-                  </TableCell>
-                  <TableCell className="text-right text-primary font-medium">
-                    {formatCurrency(day.total)}
+              {filteredDaily.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center text-[hsl(var(--admin-muted-foreground))] py-8">
+                    No data for selected branch
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                filteredDaily.map((day) => (
+                  <TableRow
+                    key={day.date}
+                    className="border-[hsl(var(--admin-border))] hover:bg-[hsl(var(--admin-row-hover))]"
+                  >
+                    <TableCell className="font-medium text-[hsl(var(--admin-card-foreground))]">
+                      {day.date}
+                    </TableCell>
+                    <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
+                      {day.services}
+                    </TableCell>
+                    <TableCell className="text-right text-[hsl(var(--admin-card-foreground))]">
+                      {day.products}
+                    </TableCell>
+                    <TableCell className="text-right text-primary font-medium">
+                      {formatCurrency(day.total)}
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </CardContent>
