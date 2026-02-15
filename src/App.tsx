@@ -33,6 +33,15 @@ import SalesReports from "./pages/owner/reports/SalesReports";
 import EmployeeReports from "./pages/owner/reports/EmployeeReports";
 import ProductReports from "./pages/owner/reports/ProductReports";
 
+// Staff Portal
+import { StaffLayout } from "./components/staff/StaffLayout";
+import StaffDashboard from "./pages/staff/StaffDashboard";
+import AttendanceShift from "./pages/staff/AttendanceShift";
+import POSCashier from "./pages/staff/POSCashier";
+import CommissionSalary from "./pages/staff/CommissionSalary";
+import CashAdvance from "./pages/staff/CashAdvance";
+import AccountProfile from "./pages/staff/AccountProfile";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -73,6 +82,16 @@ const App = () => (
             <Route path="reports/sales" element={<SalesReports />} />
             <Route path="reports/employees" element={<EmployeeReports />} />
             <Route path="reports/products" element={<ProductReports />} />
+          </Route>
+
+          {/* Staff Portal Routes (Dynamic Tenant) */}
+          <Route path="/:tenant/staff" element={<StaffLayout />}>
+            <Route path="dashboard" element={<StaffDashboard />} />
+            <Route path="attendance" element={<AttendanceShift />} />
+            <Route path="pos" element={<POSCashier />} />
+            <Route path="commission" element={<CommissionSalary />} />
+            <Route path="cash-advance" element={<CashAdvance />} />
+            <Route path="profile" element={<AccountProfile />} />
           </Route>
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
