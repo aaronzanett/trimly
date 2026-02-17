@@ -1,17 +1,36 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, Play, Scissors, Calendar, Users, TrendingUp } from "lucide-react";
 
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-charcoal-light" />
+      {/* Background */}
+      <div className="absolute inset-0 bg-background" />
       
-      {/* Decorative elements */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
+      {/* Decorative grid pattern */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{
+        backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
+        backgroundSize: '40px 40px'
+      }} />
+
+      {/* Floating accent shapes */}
+      <motion.div
+        animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-32 right-[15%] w-20 h-20 rounded-2xl bg-primary/10 border border-primary/20"
+      />
+      <motion.div
+        animate={{ y: [0, 15, 0], rotate: [0, -8, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-48 left-[10%] w-14 h-14 rounded-full bg-primary/8 border border-primary/15"
+      />
+      <motion.div
+        animate={{ y: [0, -10, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-32 right-[20%] w-10 h-10 rounded-lg bg-accent/10 border border-accent/20 rotate-45"
+      />
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
@@ -20,10 +39,10 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary border border-border mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8"
           >
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-sm text-muted-foreground font-body">
+            <span className="text-sm text-primary font-medium font-body">
               Trusted by 500+ barbershops worldwide
             </span>
           </motion.div>
@@ -70,26 +89,34 @@ const Hero = () => {
             </Button>
           </motion.div>
 
-          {/* Stats */}
+          {/* Feature cards row */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto"
+            transition={{ duration: 0.7, delay: 0.5 }}
+            className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 max-w-3xl mx-auto"
           >
             {[
-              { value: "500+", label: "Barbershops" },
-              { value: "50K+", label: "Appointments" },
-              { value: "99.9%", label: "Uptime" },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="font-display text-3xl md:text-4xl font-bold text-foreground">
-                  {stat.value}
+              { icon: Calendar, title: "Smart Booking", desc: "Automated scheduling", value: "50K+" },
+              { icon: Users, title: "Team Management", desc: "Staff & commissions", value: "500+" },
+              { icon: TrendingUp, title: "Business Growth", desc: "Analytics & reports", value: "99.9%" },
+            ].map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
+                className="group relative bg-card rounded-xl border border-border p-5 hover:border-primary/30 hover:shadow-lg transition-all duration-300"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <item.icon className="h-5 w-5 text-primary" />
+                  </div>
+                  <span className="font-display text-2xl font-bold text-foreground">{item.value}</span>
                 </div>
-                <div className="font-body text-sm text-muted-foreground mt-1">
-                  {stat.label}
-                </div>
-              </div>
+                <p className="font-display text-sm font-semibold text-foreground">{item.title}</p>
+                <p className="font-body text-xs text-muted-foreground">{item.desc}</p>
+              </motion.div>
             ))}
           </motion.div>
         </div>
