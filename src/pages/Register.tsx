@@ -61,14 +61,10 @@ const Register = () => {
   return (
     <div className="min-h-screen bg-background flex">
       {/* Left side - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-primary/80 relative overflow-hidden">
-        {/* Decorative pattern */}
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
-          backgroundSize: '32px 32px'
-        }} />
-        <div className="absolute -top-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-2xl" />
-        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-white/10 rounded-full blur-2xl" />
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-900 to-slate-800 relative overflow-hidden">
+        <div className="absolute inset-0 bg-primary/5" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
         
         <div className="relative z-10 flex flex-col justify-center items-center w-full p-12">
           <motion.div
@@ -78,15 +74,27 @@ const Register = () => {
             className="text-center"
           >
             <div className="flex items-center justify-center gap-3 mb-8">
-              <Scissors className="h-12 w-12 text-white" />
-              <span className="font-display text-4xl font-bold text-white">Trimly</span>
+              <div className="p-3 bg-primary/20 rounded-xl">
+                <Scissors className="h-10 w-10 text-primary" />
+              </div>
             </div>
             <h1 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
-              Start Your Free Trial
+              Start Your <span className="text-gradient-gold">Free Trial</span>
             </h1>
-            <p className="font-body text-white/80 max-w-md">
+            <p className="font-body text-slate-300 max-w-md">
               Join hundreds of barbershops already using Trimly to streamline their operations and grow their business.
             </p>
+            
+            <div className="mt-12 grid grid-cols-2 gap-6 text-left">
+              <div className="p-4 bg-white/5 rounded-lg border border-white/10">
+                <p className="text-2xl font-bold text-white">14 Days</p>
+                <p className="text-sm text-slate-400">Free Trial Period</p>
+              </div>
+              <div className="p-4 bg-white/5 rounded-lg border border-white/10">
+                <p className="text-2xl font-bold text-white">No CC</p>
+                <p className="text-sm text-slate-400">Required to Start</p>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
