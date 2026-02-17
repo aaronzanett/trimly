@@ -3,23 +3,23 @@ import { Star } from "lucide-react";
 
 const testimonials = [
   {
-    name: "Marcus Johnson",
-    role: "Owner, The Gentleman's Cut",
-    content: "Trimly transformed how we run our shop. Bookings are up 40% and no-shows are down. It's a game-changer.",
+    name: "Rudi Hartono",
+    role: "Owner, Barbershop Elang Jaya",
+    content: "Trimly mengubah cara kami mengelola barbershop. Booking naik 40% dan no-show berkurang drastis. Luar biasa.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
   },
   {
-    name: "David Chen",
+    name: "Bayu Setiawan",
     role: "Head Barber, Urban Fades",
-    content: "The scheduling system is incredibly intuitive. My clients love being able to book 24/7 from their phones.",
+    content: "Sistem jadwalnya sangat intuitif. Pelanggan saya suka bisa booking 24/7 langsung dari HP mereka.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
   },
   {
-    name: "Antonio Rivera",
-    role: "Founder, Rivera's Barbershop",
-    content: "We've been using Trimly for 2 years now. The analytics help us understand our business like never before.",
+    name: "Arief Hidayat",
+    role: "Founder, Hidayat Barbershop",
+    content: "Kami sudah pakai Trimly selama 2 tahun. Fitur analitiknya membantu kami memahami bisnis lebih baik dari sebelumnya.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
   },

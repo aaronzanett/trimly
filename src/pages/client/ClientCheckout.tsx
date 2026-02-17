@@ -12,9 +12,9 @@ import { useToast } from "@/hooks/use-toast";
 type CartItem = { id: string; type: "service" | "product"; name: string; price: number; quantity: number; detail?: string };
 
 const initialCart: CartItem[] = [
-  { id: "s1", type: "service", name: "Classic Haircut", price: 350, quantity: 1, detail: "Marco Reyes · Feb 20, 3:00 PM" },
-  { id: "s2", type: "service", name: "Beard Trim", price: 200, quantity: 1, detail: "Marco Reyes · Feb 20, 3:30 PM" },
-  { id: "p1", type: "product", name: "Pomade Strong Hold", price: 450, quantity: 2 },
+  { id: "s1", type: "service", name: "Classic Haircut", price: 50000, quantity: 1, detail: "Rizal Hidayat · Feb 20, 3:00 PM" },
+  { id: "s2", type: "service", name: "Beard Trim", price: 30000, quantity: 1, detail: "Rizal Hidayat · Feb 20, 3:30 PM" },
+  { id: "p1", type: "product", name: "Pomade Strong Hold", price: 85000, quantity: 2 },
 ];
 
 const paymentMethods = [
@@ -40,7 +40,7 @@ const ClientCheckout = () => {
   const serviceItems = cart.filter(i => i.type === "service");
   const productItems = cart.filter(i => i.type === "product");
   const subtotal = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
-  const serviceFee = 20;
+  const serviceFee = 5000;
   const total = subtotal + serviceFee;
 
   const handleCheckout = () => {
@@ -76,7 +76,7 @@ const ClientCheckout = () => {
                       {item.detail && <p className="text-xs text-muted-foreground">{item.detail}</p>}
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="font-semibold text-sm">₱{item.price}</span>
+                      <span className="font-semibold text-sm">Rp {item.price.toLocaleString("id-ID")}</span>
                       <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => removeItem(item.id)}>
                         <Trash2 className="h-3.5 w-3.5 text-destructive" />
                       </Button>
@@ -109,7 +109,7 @@ const ClientCheckout = () => {
                           <Plus className="h-3 w-3" />
                         </Button>
                       </div>
-                      <span className="font-semibold text-sm w-16 text-right">₱{item.price * item.quantity}</span>
+                      <span className="font-semibold text-sm w-16 text-right">Rp {(item.price * item.quantity).toLocaleString("id-ID")}</span>
                       <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => removeItem(item.id)}>
                         <Trash2 className="h-3.5 w-3.5 text-destructive" />
                       </Button>
@@ -143,22 +143,22 @@ const ClientCheckout = () => {
             <CardContent className="p-4 space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span>₱{subtotal}</span>
+                <span>Rp {subtotal.toLocaleString("id-ID")}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Service Fee</span>
-                <span>₱{serviceFee}</span>
+                 <span>Rp {serviceFee.toLocaleString("id-ID")}</span>
               </div>
               <Separator />
               <div className="flex justify-between font-bold">
                 <span>Total</span>
-                <span className="text-primary text-lg">₱{total}</span>
-              </div>
+                 <span className="text-primary text-lg">Rp {total.toLocaleString("id-ID")}</span>
+               </div>
             </CardContent>
           </Card>
 
           <Button className="w-full" size="lg" onClick={handleCheckout}>
-            Pay ₱{total}
+            Pay Rp {total.toLocaleString("id-ID")}
           </Button>
         </div>
       )}
@@ -182,17 +182,17 @@ const ClientCheckout = () => {
             {cart.map((item) => (
               <div key={item.id} className="flex justify-between">
                 <span>{item.name} {item.quantity > 1 && `x${item.quantity}`}</span>
-                <span>₱{item.price * item.quantity}</span>
+                <span>Rp {(item.price * item.quantity).toLocaleString("id-ID")}</span>
               </div>
             ))}
             <Separator />
             <div className="flex justify-between">
               <span className="text-muted-foreground">Service Fee</span>
-              <span>₱{serviceFee}</span>
-            </div>
+               <span>Rp {serviceFee.toLocaleString("id-ID")}</span>
+             </div>
             <div className="flex justify-between font-bold">
               <span>Total</span>
-              <span>₱{total}</span>
+              <span>Rp {total.toLocaleString("id-ID")}</span>
             </div>
             <Separator />
             <div className="text-center text-xs text-muted-foreground">

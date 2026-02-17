@@ -44,92 +44,56 @@ const initialPlans: Plan[] = [
   {
     id: "1",
     name: "Starter",
-    price: 29,
+    price: 149000,
     billingCycle: "monthly",
     branchLimit: 1,
     userLimit: 5,
-    features: {
-      appointments: true,
-      inventory: false,
-      analytics: false,
-      marketing: false,
-      api: false,
-    },
+    features: { appointments: true, inventory: false, analytics: false, marketing: false, api: false },
   },
   {
     id: "2",
     name: "Professional",
-    price: 79,
+    price: 229000,
     billingCycle: "monthly",
     branchLimit: 5,
     userLimit: 20,
-    features: {
-      appointments: true,
-      inventory: true,
-      analytics: true,
-      marketing: false,
-      api: false,
-    },
+    features: { appointments: true, inventory: true, analytics: true, marketing: false, api: false },
   },
   {
     id: "3",
     name: "Enterprise",
-    price: 199,
+    price: 299000,
     billingCycle: "monthly",
     branchLimit: -1,
     userLimit: -1,
-    features: {
-      appointments: true,
-      inventory: true,
-      analytics: true,
-      marketing: true,
-      api: true,
-    },
+    features: { appointments: true, inventory: true, analytics: true, marketing: true, api: true },
   },
   {
     id: "4",
     name: "Basic",
-    price: 19,
+    price: 99000,
     billingCycle: "monthly",
     branchLimit: 1,
     userLimit: 3,
-    features: {
-      appointments: true,
-      inventory: false,
-      analytics: false,
-      marketing: false,
-      api: false,
-    },
+    features: { appointments: true, inventory: false, analytics: false, marketing: false, api: false },
   },
   {
     id: "5",
     name: "Team",
-    price: 49,
+    price: 179000,
     billingCycle: "monthly",
     branchLimit: 3,
     userLimit: 10,
-    features: {
-      appointments: true,
-      inventory: true,
-      analytics: false,
-      marketing: false,
-      api: false,
-    },
+    features: { appointments: true, inventory: true, analytics: false, marketing: false, api: false },
   },
   {
     id: "6",
     name: "Premium",
-    price: 149,
+    price: 399000,
     billingCycle: "monthly",
     branchLimit: 10,
     userLimit: 50,
-    features: {
-      appointments: true,
-      inventory: true,
-      analytics: true,
-      marketing: true,
-      api: false,
-    },
+    features: { appointments: true, inventory: true, analytics: true, marketing: true, api: false },
   },
 ];
 
@@ -268,7 +232,7 @@ export default function SubscriptionPlans() {
                     <p className="font-medium text-[hsl(var(--admin-card-foreground))]">{plan.name}</p>
                   </TableCell>
                   <TableCell className="text-[hsl(var(--admin-card-foreground))]">
-                    ${plan.price}/{plan.billingCycle === "monthly" ? "mo" : "yr"}
+                    Rp {plan.price.toLocaleString("id-ID")}/{plan.billingCycle === "monthly" ? "bln" : "thn"}
                   </TableCell>
                   <TableCell className="text-[hsl(var(--admin-card-foreground))]">
                     {plan.branchLimit === -1 ? "Unlimited" : plan.branchLimit}
@@ -343,7 +307,7 @@ export default function SubscriptionPlans() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="price" className="text-[hsl(var(--admin-card-foreground))]">Price ($)</Label>
+                <Label htmlFor="price" className="text-[hsl(var(--admin-card-foreground))]">Price (Rp)</Label>
                 <Input
                   id="price"
                   type="number"

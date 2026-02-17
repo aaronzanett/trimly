@@ -5,16 +5,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Scissors, ShoppingBag, Clock, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 
 const bookingHistory = [
-  { id: "1", date: "2026-02-15", time: "3:00 PM", services: ["Classic Haircut", "Beard Trim"], barber: "Marco Reyes", total: 550, status: "completed" },
-  { id: "2", date: "2026-02-01", time: "10:00 AM", services: ["Hair Color"], barber: "Jake Santos", total: 800, status: "completed" },
-  { id: "3", date: "2026-02-20", time: "2:00 PM", services: ["Classic Haircut"], barber: "Marco Reyes", total: 350, status: "upcoming" },
-  { id: "4", date: "2026-01-20", time: "11:00 AM", services: ["Hot Towel Shave"], barber: "Carlos Diaz", total: 300, status: "cancelled" },
+  { id: "1", date: "2026-02-15", time: "3:00 PM", services: ["Classic Haircut", "Beard Trim"], barber: "Rizal Hidayat", total: 80000, status: "completed" },
+  { id: "2", date: "2026-02-01", time: "10:00 AM", services: ["Hair Color"], barber: "Fajar Nugraha", total: 150000, status: "completed" },
+  { id: "3", date: "2026-02-20", time: "2:00 PM", services: ["Classic Haircut"], barber: "Rizal Hidayat", total: 50000, status: "upcoming" },
+  { id: "4", date: "2026-01-20", time: "11:00 AM", services: ["Hot Towel Shave"], barber: "Dimas Prasetyo", total: 45000, status: "cancelled" },
 ];
 
 const purchaseHistory = [
-  { id: "1", date: "2026-02-15", items: ["Pomade Strong Hold x2"], total: 900, status: "delivered", receipt: "TRM-12345678" },
-  { id: "2", date: "2026-02-10", items: ["Beard Oil x1", "Hair Wax Matte x1"], total: 730, status: "delivered", receipt: "TRM-12345679" },
-  { id: "3", date: "2026-02-18", items: ["Hair Clay x1"], total: 400, status: "processing", receipt: "TRM-12345680" },
+  { id: "1", date: "2026-02-15", items: ["Pomade Strong Hold x2"], total: 170000, status: "delivered", receipt: "TRM-12345678" },
+  { id: "2", date: "2026-02-10", items: ["Beard Oil x1", "Hair Wax Matte x1"], total: 130000, status: "delivered", receipt: "TRM-12345679" },
+  { id: "3", date: "2026-02-18", items: ["Hair Clay x1"], total: 90000, status: "processing", receipt: "TRM-12345680" },
 ];
 
 const statusConfig: Record<string, { icon: React.ElementType; color: string; label: string }> = {
@@ -54,7 +54,7 @@ const ClientHistory = () => {
                   </div>
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <span>{booking.date} at {booking.time}</span>
-                    <span className="font-semibold text-foreground">₱{booking.total}</span>
+                    <span className="font-semibold text-foreground">Rp {booking.total.toLocaleString("id-ID")}</span>
                   </div>
                 </CardContent>
               </Card>
@@ -80,7 +80,7 @@ const ClientHistory = () => {
                   </div>
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <span>{purchase.date}</span>
-                    <span className="font-semibold text-foreground">₱{purchase.total}</span>
+                    <span className="font-semibold text-foreground">Rp {purchase.total.toLocaleString("id-ID")}</span>
                   </div>
                 </CardContent>
               </Card>

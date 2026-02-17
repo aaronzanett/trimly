@@ -11,23 +11,23 @@ import { User, Lock, Scissors, Star, Camera } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const haircutHistory = [
-  { id: "1", date: "2026-02-15", style: "Textured Crop", barber: "Marco Reyes", notes: "Short sides, textured top" },
-  { id: "2", date: "2026-01-28", style: "Classic Taper", barber: "Jake Santos", notes: "Clean taper, 2 on sides" },
-  { id: "3", date: "2026-01-10", style: "Pompadour", barber: "Marco Reyes", notes: "Volume on top, skin fade" },
+  { id: "1", date: "2026-02-15", style: "Textured Crop", barber: "Rizal Hidayat", notes: "Short sides, textured top" },
+  { id: "2", date: "2026-01-28", style: "Classic Taper", barber: "Fajar Nugraha", notes: "Clean taper, 2 on sides" },
+  { id: "3", date: "2026-01-10", style: "Pompadour", barber: "Rizal Hidayat", notes: "Volume on top, skin fade" },
 ];
 
 const favoriteBarbers = [
-  { id: "1", name: "Marco Reyes", specialty: "Classic Cuts", visits: 12, rating: 4.9 },
-  { id: "2", name: "Jake Santos", specialty: "Fades & Tapers", visits: 5, rating: 4.8 },
+  { id: "1", name: "Rizal Hidayat", specialty: "Classic Cuts", visits: 12, rating: 4.9 },
+  { id: "2", name: "Fajar Nugraha", specialty: "Fades & Tapers", visits: 5, rating: 4.8 },
 ];
 
 const ClientProfile = () => {
   const { toast } = useToast();
   const [profile, setProfile] = useState({
-    firstName: "Juan",
-    lastName: "Dela Cruz",
-    email: "juan@email.com",
-    phone: "+63 912 345 6789",
+    firstName: "Budi",
+    lastName: "Setiawan",
+    email: "budi@email.com",
+    phone: "+62 812 345 6789",
   });
   const [passwords, setPasswords] = useState({ current: "", newPass: "", confirm: "" });
 

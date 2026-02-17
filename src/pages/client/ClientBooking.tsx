@@ -13,18 +13,18 @@ import { CalendarIcon, Check, ChevronRight, Clock, Scissors, Star, Armchair } fr
 import { useToast } from "@/hooks/use-toast";
 
 const services = [
-  { id: "1", name: "Classic Haircut", price: 350, duration: 30 },
-  { id: "2", name: "Beard Trim", price: 200, duration: 20 },
-  { id: "3", name: "Hair Color", price: 800, duration: 60 },
-  { id: "4", name: "Hot Towel Shave", price: 300, duration: 25 },
-  { id: "5", name: "Hair Treatment", price: 500, duration: 45 },
-  { id: "6", name: "Kids Haircut", price: 250, duration: 20 },
+  { id: "1", name: "Classic Haircut", price: 50000, duration: 30 },
+  { id: "2", name: "Beard Trim", price: 30000, duration: 20 },
+  { id: "3", name: "Hair Color", price: 150000, duration: 60 },
+  { id: "4", name: "Hot Towel Shave", price: 45000, duration: 25 },
+  { id: "5", name: "Hair Treatment", price: 75000, duration: 45 },
+  { id: "6", name: "Kids Haircut", price: 40000, duration: 20 },
 ];
 
 const barbers = [
-  { id: "1", name: "Marco Reyes", specialty: "Classic Cuts", rating: 4.9, available: true },
-  { id: "2", name: "Jake Santos", specialty: "Fades & Tapers", rating: 4.8, available: true },
-  { id: "3", name: "Carlos Diaz", specialty: "Beard Styling", rating: 4.7, available: false },
+  { id: "1", name: "Rizal Hidayat", specialty: "Classic Cuts", rating: 4.9, available: true },
+  { id: "2", name: "Fajar Nugraha", specialty: "Fades & Tapers", rating: 4.8, available: true },
+  { id: "3", name: "Dimas Prasetyo", specialty: "Beard Styling", rating: 4.7, available: false },
 ];
 
 const timeSlots = ["9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM"];
@@ -124,7 +124,7 @@ const ClientBooking = () => {
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-primary">₱{service.price}</span>
+                    <span className="font-bold text-primary">Rp {service.price.toLocaleString("id-ID")}</span>
                     <div className={cn(
                       "w-5 h-5 rounded-full border-2 flex items-center justify-center",
                       isSelected ? "border-primary bg-primary" : "border-muted-foreground"
@@ -142,7 +142,7 @@ const ClientBooking = () => {
                 <div>
                   <p className="text-sm text-muted-foreground">{selectedServices.length} service(s) · {totalDuration} min</p>
                 </div>
-                <span className="font-bold text-lg text-primary">₱{totalPrice}</span>
+                <span className="font-bold text-lg text-primary">Rp {totalPrice.toLocaleString("id-ID")}</span>
               </CardContent>
             </Card>
           )}
@@ -295,7 +295,7 @@ const ClientBooking = () => {
             </div>
             <div className="border-t border-border pt-2 flex justify-between">
               <span className="font-semibold">Total</span>
-              <span className="font-bold text-primary text-lg">₱{totalPrice}</span>
+              <span className="font-bold text-primary text-lg">Rp {totalPrice.toLocaleString("id-ID")}</span>
             </div>
           </div>
           <DialogFooter>

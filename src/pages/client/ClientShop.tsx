@@ -9,12 +9,12 @@ import { ShoppingBag, Search, Plus, Minus, ShoppingCart, Star } from "lucide-rea
 import { useToast } from "@/hooks/use-toast";
 
 const allProducts = [
-  { id: "1", name: "Pomade Strong Hold", price: 450, brand: "Trimly Pro", category: "Styling", tag: "Best Seller", rating: 4.8, description: "Professional-grade pomade with strong hold and high shine. Perfect for slick backs and pompadours.", stock: 15 },
-  { id: "2", name: "Beard Oil", price: 380, brand: "Trimly Pro", category: "Beard Care", tag: "New", rating: 4.6, description: "Nourishing beard oil with jojoba and argan blend. Softens and conditions facial hair.", stock: 22 },
-  { id: "3", name: "Hair Wax Matte", price: 350, brand: "Trimly Pro", category: "Styling", tag: "Popular", rating: 4.7, description: "Matte finish wax for natural-looking textured styles. Medium hold, no shine.", stock: 18 },
-  { id: "4", name: "Shampoo Anti-Dandruff", price: 320, brand: "Trimly Pro", category: "Hair Care", tag: "", rating: 4.5, description: "Gentle anti-dandruff shampoo with tea tree oil. Cleanses without stripping natural oils.", stock: 30 },
-  { id: "5", name: "Hair Clay", price: 400, brand: "Trimly Pro", category: "Styling", tag: "Popular", rating: 4.9, description: "Premium clay for strong hold with ultra-matte finish. Great for short to medium styles.", stock: 12 },
-  { id: "6", name: "Aftershave Balm", price: 280, brand: "Trimly Pro", category: "Shaving", tag: "", rating: 4.4, description: "Soothing aftershave balm with aloe vera. Calms irritation and moisturizes.", stock: 25 },
+  { id: "1", name: "Pomade Strong Hold", price: 85000, brand: "Trimly Pro", category: "Styling", tag: "Best Seller", rating: 4.8, description: "Professional-grade pomade with strong hold and high shine. Perfect for slick backs and pompadours.", stock: 15 },
+  { id: "2", name: "Beard Oil", price: 65000, brand: "Trimly Pro", category: "Beard Care", tag: "New", rating: 4.6, description: "Nourishing beard oil with jojoba and argan blend. Softens and conditions facial hair.", stock: 22 },
+  { id: "3", name: "Hair Wax Matte", price: 75000, brand: "Trimly Pro", category: "Styling", tag: "Popular", rating: 4.7, description: "Matte finish wax for natural-looking textured styles. Medium hold, no shine.", stock: 18 },
+  { id: "4", name: "Shampoo Anti-Dandruff", price: 55000, brand: "Trimly Pro", category: "Hair Care", tag: "", rating: 4.5, description: "Gentle anti-dandruff shampoo with tea tree oil. Cleanses without stripping natural oils.", stock: 30 },
+  { id: "5", name: "Hair Clay", price: 90000, brand: "Trimly Pro", category: "Styling", tag: "Popular", rating: 4.9, description: "Premium clay for strong hold with ultra-matte finish. Great for short to medium styles.", stock: 12 },
+  { id: "6", name: "Aftershave Balm", price: 45000, brand: "Trimly Pro", category: "Shaving", tag: "", rating: 4.4, description: "Soothing aftershave balm with aloe vera. Calms irritation and moisturizes.", stock: 25 },
 ];
 
 const categories = ["All", "Styling", "Beard Care", "Hair Care", "Shaving"];
@@ -83,7 +83,7 @@ const ClientShop = () => {
               <p className="font-semibold text-sm">{product.name}</p>
               <p className="text-xs text-muted-foreground">{product.brand}</p>
               <div className="flex items-center justify-between mt-2">
-                <span className="text-primary font-bold">₱{product.price}</span>
+                <span className="text-primary font-bold">Rp {product.price.toLocaleString("id-ID")}</span>
                 <div className="flex items-center gap-0.5">
                   <Star className="h-3 w-3 fill-primary text-primary" />
                   <span className="text-xs">{product.rating}</span>
@@ -119,7 +119,7 @@ const ClientShop = () => {
                   <span className="text-xs text-muted-foreground">{selectedProduct.stock} in stock</span>
                 </div>
                 <div className="flex items-center justify-between border-t border-border pt-3">
-                  <span className="text-2xl font-bold text-primary">₱{selectedProduct.price}</span>
+                  <span className="text-2xl font-bold text-primary">Rp {selectedProduct.price.toLocaleString("id-ID")}</span>
                   <Button onClick={() => { addToCart(selectedProduct); setSelectedProduct(null); }}>
                     <ShoppingCart className="h-4 w-4 mr-1" /> Add to Cart
                   </Button>

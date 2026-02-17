@@ -31,10 +31,10 @@ interface TenantControl {
 }
 
 const tenantsData: TenantControl[] = [
-  { id: "1", name: "Elite Cuts Barbershop", email: "owner@elitecuts.com", status: "active", plan: "Professional" },
-  { id: "2", name: "Urban Style Studio", email: "contact@urbanstyle.com", status: "active", plan: "Enterprise" },
-  { id: "3", name: "Classic Barbers", email: "info@classicbarbers.com", status: "active", plan: "Starter" },
-  { id: "4", name: "The Gentleman's Corner", email: "hello@gentlemanscorner.com", status: "suspended", plan: "Professional", suspendedAt: "2026-01-15", suspendReason: "Non-payment" },
+  { id: "1", name: "Barbershop Elang Jaya", email: "owner@elangjaya.com", status: "active", plan: "Professional" },
+  { id: "2", name: "Studio Gaya Urban", email: "contact@gayaurban.com", status: "active", plan: "Enterprise" },
+  { id: "3", name: "Pangkas Klasik", email: "info@pangkasklasik.com", status: "active", plan: "Starter" },
+  { id: "4", name: "Barbershop Pria Sejati", email: "hello@priasejati.com", status: "suspended", plan: "Professional", suspendedAt: "2026-01-15", suspendReason: "Non-payment" },
   { id: "5", name: "Fresh Fades Lounge", email: "book@freshfades.com", status: "active", plan: "Starter" },
   { id: "6", name: "Royal Cuts", email: "info@royalcuts.com", status: "active", plan: "Professional" },
   { id: "7", name: "Modern Man Grooming", email: "contact@modernman.com", status: "suspended", plan: "Starter", suspendedAt: "2026-02-01", suspendReason: "Terms violation" },
@@ -60,7 +60,7 @@ export default function SystemControl() {
     maxBranchesStarter: "2",
     maxBranchesPro: "10",
     maxBranchesEnterprise: "Unlimited",
-    defaultCurrency: "USD",
+    defaultCurrency: "IDR",
   });
 
   const [tenants, setTenants] = useState(tenantsData);
@@ -148,6 +148,7 @@ export default function SystemControl() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
+                  <SelectItem value="IDR" className="text-[hsl(var(--admin-card-foreground))]">IDR (Rp)</SelectItem>
                   <SelectItem value="USD" className="text-[hsl(var(--admin-card-foreground))]">USD ($)</SelectItem>
                   <SelectItem value="EUR" className="text-[hsl(var(--admin-card-foreground))]">EUR (€)</SelectItem>
                   <SelectItem value="GBP" className="text-[hsl(var(--admin-card-foreground))]">GBP (£)</SelectItem>
