@@ -42,6 +42,15 @@ import CommissionSalary from "./pages/staff/CommissionSalary";
 import CashAdvance from "./pages/staff/CashAdvance";
 import AccountProfile from "./pages/staff/AccountProfile";
 
+// Client Portal
+import { ClientLayout } from "./components/client/ClientLayout";
+import ClientHome from "./pages/client/ClientHome";
+import ClientBooking from "./pages/client/ClientBooking";
+import ClientShop from "./pages/client/ClientShop";
+import ClientCheckout from "./pages/client/ClientCheckout";
+import ClientHistory from "./pages/client/ClientHistory";
+import ClientProfile from "./pages/client/ClientProfile";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -92,6 +101,16 @@ const App = () => (
             <Route path="commission" element={<CommissionSalary />} />
             <Route path="cash-advance" element={<CashAdvance />} />
             <Route path="profile" element={<AccountProfile />} />
+          </Route>
+
+          {/* Client Portal Routes (Dynamic Tenant) */}
+          <Route path="/:tenant/client" element={<ClientLayout />}>
+            <Route index element={<ClientHome />} />
+            <Route path="booking" element={<ClientBooking />} />
+            <Route path="shop" element={<ClientShop />} />
+            <Route path="checkout" element={<ClientCheckout />} />
+            <Route path="history" element={<ClientHistory />} />
+            <Route path="profile" element={<ClientProfile />} />
           </Route>
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
