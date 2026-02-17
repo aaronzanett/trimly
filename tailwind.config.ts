@@ -58,6 +58,11 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         gold: "hsl(var(--gold))",
+        teal: {
+          DEFAULT: "hsl(var(--teal))",
+          light: "hsl(var(--teal-light))",
+        },
+        copper: "hsl(var(--copper))",
         cream: "hsl(var(--cream))",
         charcoal: {
           DEFAULT: "hsl(var(--charcoal))",
@@ -65,7 +70,7 @@ export default {
         },
       },
       fontFamily: {
-        display: ['Playfair Display', 'serif'],
+        display: ['Space Grotesk', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
       },
       borderRadius: {
