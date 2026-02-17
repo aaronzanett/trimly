@@ -38,35 +38,35 @@ interface BillingHistoryEntry {
 }
 
 const billingRecords: BillingRecord[] = [
-  { id: "1", tenant: "Elite Cuts Barbershop", email: "owner@elitecuts.com", plan: "Professional", amount: "$79.00", status: "paid", dueDate: "2026-02-15", lastPayment: "2026-01-15" },
-  { id: "2", tenant: "Urban Style Studio", email: "contact@urbanstyle.com", plan: "Enterprise", amount: "$199.00", status: "paid", dueDate: "2026-03-01", lastPayment: "2026-02-01" },
-  { id: "3", tenant: "Classic Barbers", email: "info@classicbarbers.com", plan: "Starter", amount: "$29.00", status: "overdue", dueDate: "2026-01-14", lastPayment: "2025-12-14" },
-  { id: "4", tenant: "The Gentleman's Corner", email: "hello@gentlemanscorner.com", plan: "Professional", amount: "$79.00", status: "failed", dueDate: "2026-01-01", lastPayment: "2025-11-01" },
-  { id: "5", tenant: "Fresh Fades Lounge", email: "book@freshfades.com", plan: "Starter", amount: "$29.00", status: "pending", dueDate: "2026-02-15", lastPayment: "2026-01-15" },
-  { id: "6", tenant: "Royal Cuts", email: "info@royalcuts.com", plan: "Professional", amount: "$79.00", status: "paid", dueDate: "2026-02-01", lastPayment: "2026-01-01" },
-  { id: "7", tenant: "Modern Man Grooming", email: "contact@modernman.com", plan: "Starter", amount: "$29.00", status: "overdue", dueDate: "2026-01-24", lastPayment: "2025-12-24" },
+  { id: "1", tenant: "Barbershop Elang Jaya", email: "owner@elangjaya.com", plan: "Professional", amount: "Rp 229.000", status: "paid", dueDate: "2026-02-15", lastPayment: "2026-01-15" },
+  { id: "2", tenant: "Studio Gaya Urban", email: "contact@gayaurban.com", plan: "Enterprise", amount: "Rp 299.000", status: "paid", dueDate: "2026-03-01", lastPayment: "2026-02-01" },
+  { id: "3", tenant: "Pangkas Klasik", email: "info@pangkasklasik.com", plan: "Starter", amount: "Rp 149.000", status: "overdue", dueDate: "2026-01-14", lastPayment: "2025-12-14" },
+  { id: "4", tenant: "Barbershop Pria Sejati", email: "hello@priasejati.com", plan: "Professional", amount: "Rp 229.000", status: "failed", dueDate: "2026-01-01", lastPayment: "2025-11-01" },
+  { id: "5", tenant: "Fresh Fades Lounge", email: "book@freshfades.com", plan: "Starter", amount: "Rp 149.000", status: "pending", dueDate: "2026-02-15", lastPayment: "2026-01-15" },
+  { id: "6", tenant: "Royal Cuts", email: "info@royalcuts.com", plan: "Professional", amount: "Rp 229.000", status: "paid", dueDate: "2026-02-01", lastPayment: "2026-01-01" },
+  { id: "7", tenant: "Modern Man Grooming", email: "contact@modernman.com", plan: "Starter", amount: "Rp 149.000", status: "overdue", dueDate: "2026-01-24", lastPayment: "2025-12-24" },
 ];
 
 const billingHistory: Record<string, BillingHistoryEntry[]> = {
   "1": [
-    { date: "2026-01-15", description: "Monthly subscription", amount: "$79.00", status: "paid" },
-    { date: "2025-12-15", description: "Monthly subscription", amount: "$79.00", status: "paid" },
-    { date: "2025-11-15", description: "Monthly subscription", amount: "$79.00", status: "paid" },
+    { date: "2026-01-15", description: "Monthly subscription", amount: "Rp 229.000", status: "paid" },
+    { date: "2025-12-15", description: "Monthly subscription", amount: "Rp 229.000", status: "paid" },
+    { date: "2025-11-15", description: "Monthly subscription", amount: "Rp 229.000", status: "paid" },
   ],
   "3": [
-    { date: "2025-12-14", description: "Monthly subscription", amount: "$29.00", status: "paid" },
-    { date: "2025-11-14", description: "Monthly subscription", amount: "$29.00", status: "paid" },
+    { date: "2025-12-14", description: "Monthly subscription", amount: "Rp 149.000", status: "paid" },
+    { date: "2025-11-14", description: "Monthly subscription", amount: "Rp 149.000", status: "paid" },
   ],
   "4": [
-    { date: "2025-12-01", description: "Monthly subscription", amount: "$79.00", status: "failed" },
-    { date: "2025-11-01", description: "Monthly subscription", amount: "$79.00", status: "paid" },
+    { date: "2025-12-01", description: "Monthly subscription", amount: "Rp 229.000", status: "failed" },
+    { date: "2025-11-01", description: "Monthly subscription", amount: "Rp 229.000", status: "paid" },
   ],
 };
 
 const ITEMS_PER_PAGE = 5;
 
 const stats = [
-  { title: "Total Revenue", value: "$24,580", icon: DollarSign, color: "text-green-600" },
+  { title: "Total Revenue", value: "Rp 24.580.000", icon: DollarSign, color: "text-green-600" },
   { title: "Overdue Payments", value: "3", icon: AlertTriangle, color: "text-orange-500" },
   { title: "Paid This Month", value: "42", icon: CheckCircle, color: "text-green-500" },
   { title: "Pending", value: "5", icon: Clock, color: "text-yellow-500" },
@@ -257,7 +257,7 @@ export default function BillingMonitor() {
             <div className="space-y-2">
               <Label className="text-[hsl(var(--admin-card-foreground))]">Amount</Label>
               <Input
-                placeholder="$0.00"
+                placeholder="Rp 0"
                 value={adjustmentData.amount}
                 onChange={(e) => setAdjustmentData({ ...adjustmentData, amount: e.target.value })}
                 className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))]"

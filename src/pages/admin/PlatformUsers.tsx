@@ -59,12 +59,12 @@ const getRoleBadgeStyle = (role: UserRole) => {
 };
 
 const initialUsers: PlatformUser[] = [
-  { id: "1", name: "John Smith", email: "john.smith@trimly.com", phone: "+1234567890", role: "super_admin", createdAt: "2024-01-10" },
-  { id: "2", name: "Sarah Johnson", email: "sarah.j@trimly.com", phone: "+1987654321", role: "finance", createdAt: "2024-02-15" },
-  { id: "3", name: "Michael Chen", email: "m.chen@trimly.com", phone: "+1122334455", role: "support", createdAt: "2024-03-20" },
-  { id: "4", name: "Emily Davis", email: "emily.d@trimly.com", phone: "+1555666777", role: "finance", createdAt: "2024-04-05" },
-  { id: "5", name: "James Wilson", email: "j.wilson@trimly.com", phone: "+1888999000", role: "support", createdAt: "2024-05-12" },
-  { id: "6", name: "Lisa Anderson", email: "lisa.a@trimly.com", phone: "+1444555666", role: "super_admin", createdAt: "2024-06-18" },
+  { id: "1", name: "Adi Nugroho", email: "adi.nugroho@trimly.com", phone: "+6281234567890", role: "super_admin", createdAt: "2024-01-10" },
+  { id: "2", name: "Sari Wulandari", email: "sari.w@trimly.com", phone: "+6281987654321", role: "finance", createdAt: "2024-02-15" },
+  { id: "3", name: "Rizki Pratama", email: "rizki.p@trimly.com", phone: "+6281122334455", role: "support", createdAt: "2024-03-20" },
+  { id: "4", name: "Putri Rahayu", email: "putri.r@trimly.com", phone: "+6281555666777", role: "finance", createdAt: "2024-04-05" },
+  { id: "5", name: "Hendra Wijaya", email: "hendra.w@trimly.com", phone: "+6281888999000", role: "support", createdAt: "2024-05-12" },
+  { id: "6", name: "Lina Kusuma", email: "lina.k@trimly.com", phone: "+6281444555666", role: "super_admin", createdAt: "2024-06-18" },
 ];
 
 const ITEMS_PER_PAGE = 5;
@@ -287,7 +287,7 @@ export default function PlatformUsers() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))] focus-visible:border-primary"
-                placeholder="John Smith"
+                placeholder="Adi Nugroho"
               />
             </div>
 
@@ -299,7 +299,7 @@ export default function PlatformUsers() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))] focus-visible:border-primary"
-                placeholder="john@trimly.com"
+                placeholder="adi@trimly.com"
               />
             </div>
 
@@ -311,7 +311,7 @@ export default function PlatformUsers() {
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="bg-[hsl(var(--admin-background))] border-[hsl(var(--admin-border))] text-[hsl(var(--admin-card-foreground))] placeholder:text-[hsl(var(--admin-muted-foreground))] focus-visible:border-primary"
-                  placeholder="+1234567890"
+                  placeholder="+6281234567890"
                 />
               </div>
 

@@ -15,9 +15,9 @@ const CommissionSalary = () => {
   const [selectedPayslip, setSelectedPayslip] = useState<any>(null);
 
   const commissionDetails = [
-    { id: "1", date: "2026-02-14", service: "Haircut", customer: "Ahmad", amount: 50000, commission: 15000, rate: "30%" },
-    { id: "2", date: "2026-02-14", service: "Beard Trim", customer: "Budi", amount: 30000, commission: 9000, rate: "30%" },
-    { id: "3", date: "2026-02-13", service: "Hair Color", customer: "Charlie", amount: 150000, commission: 37500, rate: "25%" },
+    { id: "1", date: "2026-02-14", service: "Haircut", customer: "Andi", amount: 50000, commission: 15000, rate: "30%" },
+    { id: "2", date: "2026-02-14", service: "Beard Trim", customer: "Bambang", amount: 30000, commission: 9000, rate: "30%" },
+    { id: "3", date: "2026-02-13", service: "Hair Color", customer: "Cahyo", amount: 150000, commission: 37500, rate: "25%" },
     { id: "4", date: "2026-02-13", service: "Haircut", customer: "Dedi", amount: 50000, commission: 15000, rate: "30%" },
     { id: "5", date: "2026-02-12", service: "Shave", customer: "Eko", amount: 35000, commission: 10500, rate: "30%" },
   ];

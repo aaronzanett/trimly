@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const plans = [
   {
     name: "Starter",
-    price: "29",
+    price: "149.000",
     description: "Perfect for solo barbers getting started",
     features: [
       "1 Barber profile",
@@ -18,7 +19,7 @@ const plans = [
   },
   {
     name: "Professional",
-    price: "79",
+    price: "229.000",
     description: "For growing barbershops with a team",
     features: [
       "Up to 5 Barber profiles",
@@ -33,7 +34,7 @@ const plans = [
   },
   {
     name: "Enterprise",
-    price: "149",
+    price: "299.000",
     description: "For multi-location barbershop chains",
     features: [
       "Unlimited Barber profiles",
@@ -102,11 +103,11 @@ const Pricing = () => {
                   {plan.description}
                 </p>
                 <div className="flex items-baseline justify-center">
-                  <span className="font-body text-2xl text-muted-foreground">$</span>
-                  <span className="font-display text-5xl font-bold text-foreground">
+                  <span className="font-body text-lg text-muted-foreground">Rp</span>
+                  <span className="font-display text-4xl font-bold text-foreground ml-1">
                     {plan.price}
                   </span>
-                  <span className="font-body text-muted-foreground ml-2">/month</span>
+                  <span className="font-body text-muted-foreground ml-2">/bulan</span>
                 </div>
               </div>
 
@@ -127,8 +128,9 @@ const Pricing = () => {
                 variant={plan.popular ? "hero" : "heroOutline"}
                 className="w-full"
                 size="lg"
+                asChild
               >
-                Get Started
+                <Link to="/register">Get Started</Link>
               </Button>
             </motion.div>
           ))}

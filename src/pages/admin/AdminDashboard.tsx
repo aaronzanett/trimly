@@ -18,7 +18,7 @@ const stats = [
   },
   {
     title: "MRR",
-    value: "$24,580",
+    value: "Rp 24.580.000",
     change: "+15%",
     changeType: "positive" as const,
     icon: DollarSign,
@@ -33,10 +33,10 @@ const stats = [
 ];
 
 const todayActivities = [
-  { time: "09:15 AM", event: "New tenant signup", tenant: "Elite Cuts Barbershop", type: "signup" },
-  { time: "10:30 AM", event: "Subscription upgraded", tenant: "Urban Style Studio", type: "upgrade" },
-  { time: "11:45 AM", event: "New branch added", tenant: "Classic Barbers", type: "branch" },
-  { time: "02:00 PM", event: "Payment received", tenant: "The Gentleman's Corner", type: "payment" },
+  { time: "09:15 AM", event: "New tenant signup", tenant: "Barbershop Elang Jaya", type: "signup" },
+  { time: "10:30 AM", event: "Subscription upgraded", tenant: "Studio Gaya Urban", type: "upgrade" },
+  { time: "11:45 AM", event: "New branch added", tenant: "Pangkas Klasik", type: "branch" },
+  { time: "02:00 PM", event: "Payment received", tenant: "Barbershop Pria Sejati", type: "payment" },
   { time: "03:30 PM", event: "Trial started", tenant: "Fresh Fades Lounge", type: "trial" },
   { time: "04:15 PM", event: "Support ticket opened", tenant: "Premium Cuts", type: "support" },
 ];

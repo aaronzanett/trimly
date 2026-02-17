@@ -37,8 +37,8 @@ interface Tenant {
 const tenants: Tenant[] = [
   {
     id: "1",
-    name: "Elite Cuts Barbershop",
-    email: "owner@elitecuts.com",
+    name: "Barbershop Elang Jaya",
+    email: "owner@elangjaya.com",
     status: "active",
     plan: "Professional",
     subscriptionStart: "2024-01-15",
@@ -48,8 +48,8 @@ const tenants: Tenant[] = [
   },
   {
     id: "2",
-    name: "Urban Style Studio",
-    email: "contact@urbanstyle.com",
+    name: "Studio Gaya Urban",
+    email: "contact@gayaurban.com",
     status: "active",
     plan: "Enterprise",
     subscriptionStart: "2024-03-01",
@@ -59,8 +59,8 @@ const tenants: Tenant[] = [
   },
   {
     id: "3",
-    name: "Classic Barbers",
-    email: "info@classicbarbers.com",
+    name: "Pangkas Klasik",
+    email: "info@pangkasklasik.com",
     status: "trial",
     plan: "Starter",
     subscriptionStart: "2024-12-01",
@@ -70,8 +70,8 @@ const tenants: Tenant[] = [
   },
   {
     id: "4",
-    name: "The Gentleman's Corner",
-    email: "hello@gentlemanscorner.com",
+    name: "Barbershop Pria Sejati",
+    email: "hello@priasejati.com",
     status: "suspended",
     plan: "Professional",
     subscriptionStart: "2024-06-01",

@@ -29,9 +29,9 @@ const StaffDashboard = () => {
   });
 
   const [queue] = useState([
-    { id: "1", customerName: "Ahmad", service: "Haircut", estimatedTime: "30 min", position: 1 },
-    { id: "2", customerName: "Budi", service: "Haircut + Beard", estimatedTime: "45 min", position: 2 },
-    { id: "3", customerName: "Charlie", service: "Hair Color", estimatedTime: "60 min", position: 3 },
+    { id: "1", customerName: "Andi", service: "Haircut", estimatedTime: "30 min", position: 1 },
+    { id: "2", customerName: "Bambang", service: "Haircut + Beard", estimatedTime: "45 min", position: 2 },
+    { id: "3", customerName: "Cahyo", service: "Hair Color", estimatedTime: "60 min", position: 3 },
   ]);
 
   return (

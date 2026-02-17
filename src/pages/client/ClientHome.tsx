@@ -7,30 +7,30 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Scissors, Star, ArrowRight, Tag, ShoppingBag } from "lucide-react";
 
 const promotions = [
-  { id: "1", title: "First Visit 20% Off", description: "New customers get 20% off any haircut service", badge: "New Customer", validUntil: "2026-03-31" },
-  { id: "2", title: "Bundle Deal", description: "Haircut + Beard Trim for only ₱450", badge: "Best Value", validUntil: "2026-02-28" },
-  { id: "3", title: "Refer a Friend", description: "Get ₱100 off for every friend you refer", badge: "Referral", validUntil: "2026-04-30" },
+  { id: "1", title: "Diskon 20% Kunjungan Pertama", description: "Pelanggan baru dapat diskon 20% untuk semua layanan potong rambut", badge: "Pelanggan Baru", validUntil: "2026-03-31" },
+  { id: "2", title: "Paket Hemat", description: "Potong Rambut + Cukur Jenggot hanya Rp 70.000", badge: "Best Value", validUntil: "2026-02-28" },
+  { id: "3", title: "Ajak Teman", description: "Dapatkan Rp 15.000 off untuk setiap teman yang kamu ajak", badge: "Referral", validUntil: "2026-04-30" },
 ];
 
 const services = [
-  { id: "1", name: "Classic Haircut", price: 350, duration: "30 min", icon: "✂️" },
-  { id: "2", name: "Beard Trim", price: 200, duration: "20 min", icon: "🧔" },
-  { id: "3", name: "Hair Color", price: 800, duration: "60 min", icon: "🎨" },
-  { id: "4", name: "Hot Towel Shave", price: 300, duration: "25 min", icon: "🪒" },
-  { id: "5", name: "Hair Treatment", price: 500, duration: "45 min", icon: "💆" },
-  { id: "6", name: "Kids Haircut", price: 250, duration: "20 min", icon: "👦" },
+  { id: "1", name: "Classic Haircut", price: 50000, duration: "30 min", icon: "✂️" },
+  { id: "2", name: "Beard Trim", price: 30000, duration: "20 min", icon: "🧔" },
+  { id: "3", name: "Hair Color", price: 150000, duration: "60 min", icon: "🎨" },
+  { id: "4", name: "Hot Towel Shave", price: 45000, duration: "25 min", icon: "🪒" },
+  { id: "5", name: "Hair Treatment", price: 75000, duration: "45 min", icon: "💆" },
+  { id: "6", name: "Kids Haircut", price: 40000, duration: "20 min", icon: "👦" },
 ];
 
 const barbers = [
-  { id: "1", name: "Marco Reyes", specialty: "Classic Cuts", rating: 4.9, reviews: 128 },
-  { id: "2", name: "Jake Santos", specialty: "Fades & Tapers", rating: 4.8, reviews: 95 },
-  { id: "3", name: "Carlos Diaz", specialty: "Beard Styling", rating: 4.7, reviews: 72 },
+  { id: "1", name: "Rizal Hidayat", specialty: "Classic Cuts", rating: 4.9, reviews: 128 },
+  { id: "2", name: "Fajar Nugraha", specialty: "Fades & Tapers", rating: 4.8, reviews: 95 },
+  { id: "3", name: "Dimas Prasetyo", specialty: "Beard Styling", rating: 4.7, reviews: 72 },
 ];
 
 const products = [
-  { id: "1", name: "Pomade Strong Hold", price: 450, brand: "Trimly Pro", tag: "Best Seller" },
-  { id: "2", name: "Beard Oil", price: 380, brand: "Trimly Pro", tag: "New" },
-  { id: "3", name: "Hair Wax Matte", price: 350, brand: "Trimly Pro", tag: "Popular" },
+  { id: "1", name: "Pomade Strong Hold", price: 85000, brand: "Trimly Pro", tag: "Best Seller" },
+  { id: "2", name: "Beard Oil", price: 65000, brand: "Trimly Pro", tag: "New" },
+  { id: "3", name: "Hair Wax Matte", price: 75000, brand: "Trimly Pro", tag: "Popular" },
 ];
 
 const ClientHome = () => {
@@ -86,7 +86,7 @@ const ClientHome = () => {
               <CardContent className="p-4 text-center">
                 <span className="text-2xl mb-2 block">{service.icon}</span>
                 <p className="font-semibold text-sm">{service.name}</p>
-                <p className="text-primary font-bold text-sm">₱{service.price}</p>
+                <p className="text-primary font-bold text-sm">Rp {service.price.toLocaleString("id-ID")}</p>
                 <p className="text-xs text-muted-foreground">{service.duration}</p>
               </CardContent>
             </Card>
@@ -145,7 +145,7 @@ const ClientHome = () => {
                 <Badge variant="secondary" className="text-xs mb-1">{product.tag}</Badge>
                 <p className="font-semibold text-sm">{product.name}</p>
                 <p className="text-xs text-muted-foreground">{product.brand}</p>
-                <p className="text-primary font-bold mt-1">₱{product.price}</p>
+                <p className="text-primary font-bold mt-1">Rp {product.price.toLocaleString("id-ID")}</p>
               </CardContent>
             </Card>
           ))}
