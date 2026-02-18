@@ -118,7 +118,7 @@ const ClientShopProfile = () => {
               <Scissors className="h-4 w-4 mr-1" /> Pesan Sekarang
             </Link>
           </Button>
-          <Button asChild variant="outline" size="sm" className="flex-1 border-white/20 text-white hover:bg-white/10 hover:text-white">
+          <Button asChild variant="secondary" size="sm" className="flex-1 bg-white/15 text-white border-white/20 hover:bg-white/25 hover:text-white">
             <Link to={`/client/${shopSlug}/shop`}>
               <ShoppingBag className="h-4 w-4 mr-1" /> Beli Produk
             </Link>
