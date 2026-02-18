@@ -1,41 +1,87 @@
-import { Link, useParams } from "react-router-dom";
-import { Scissors, ShoppingCart, User, LogIn } from "lucide-react";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { Scissors, ShoppingCart, User, LogIn, Home, CalendarPlus, ShoppingBag, Clock, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export function ClientNavbar() {
   const { shopSlug } = useParams<{ shopSlug?: string }>();
+  const location = useLocation();
+
+  const globalLinks = [
+    { label: "Temukan", path: "/client", icon: Compass, exact: true },
+    { label: "Riwayat", path: "/client/history", icon: Clock },
+    { label: "Profil", path: "/client/profile", icon: User },
+  ];
+
+  const shopLinks = shopSlug ? [
+    { label: "Info Toko", path: `/client/${shopSlug}`, icon: Home, exact: true },
+    { label: "Booking", path: `/client/${shopSlug}/booking`, icon: CalendarPlus },
+    { label: "Produk", path: `/client/${shopSlug}/shop`, icon: ShoppingBag },
+  ] : [];
+
+  const isActive = (path: string, exact?: boolean) =>
+    exact ? location.pathname === path : location.pathname.startsWith(path);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/90 backdrop-blur-lg border-b border-border">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/client" className="flex items-center gap-2">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
+        {/* Logo */}
+        <Link to="/client" className="flex items-center gap-2 shrink-0">
           <Scissors className="h-6 w-6 text-primary" />
           <span className="font-display text-xl font-bold text-foreground">Trimly</span>
         </Link>
 
-        {shopSlug && (
-          <div className="hidden md:flex items-center gap-6">
-            <Link to={`/client/${shopSlug}`} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Beranda</Link>
-            <Link to={`/client/${shopSlug}/booking`} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Booking</Link>
-            <Link to={`/client/${shopSlug}/shop`} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Produk</Link>
-          </div>
-        )}
+        {/* Center nav links */}
+        <div className="hidden md:flex items-center gap-1 flex-1 justify-center">
+          {(shopSlug ? shopLinks : globalLinks).map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
+                isActive(item.path, item.exact)
+                  ? "bg-primary/10 text-primary"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+              )}
+            >
+              <item.icon className="h-4 w-4" />
+              {item.label}
+            </Link>
+          ))}
+          {/* If inside a shop, also show global links */}
+          {shopSlug && (
+            <>
+              <span className="w-px h-5 bg-border mx-1" />
+              {globalLinks.filter(l => l.path !== "/client").map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
+                    isActive(item.path, item.exact)
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                  )}
+                >
+                  <item.icon className="h-4 w-4" />
+                  {item.label}
+                </Link>
+              ))}
+            </>
+          )}
+        </div>
 
-        <div className="flex items-center gap-2">
+        {/* Right actions */}
+        <div className="flex items-center gap-1 shrink-0">
           {shopSlug && (
             <Button variant="ghost" size="icon" asChild>
-              <Link to={`/client/${shopSlug}/checkout`}>
+              <Link to={`/client/${shopSlug}/checkout`} title="Keranjang">
                 <ShoppingCart className="h-5 w-5" />
               </Link>
             </Button>
           )}
           <Button variant="ghost" size="icon" asChild>
-            <Link to="/client/profile">
-              <User className="h-5 w-5" />
-            </Link>
-          </Button>
-          <Button variant="ghost" size="icon" asChild>
-            <Link to="/client/login">
+            <Link to="/client/login" title="Masuk">
               <LogIn className="h-5 w-5" />
             </Link>
           </Button>
