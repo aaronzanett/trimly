@@ -101,6 +101,8 @@ const ClientDiscover = () => {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("distance");
   const [showOpenOnly, setShowOpenOnly] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const PAGE_SIZE = 5;
 
   // Location & city state
   const [detectedCity, setDetectedCity] = useState<string | null>(null);
@@ -202,6 +204,14 @@ const ClientDiscover = () => {
       return parseFloat(a.distance) - parseFloat(b.distance);
     });
 
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const paginated = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  const handleFilterChange = (fn: () => void) => {
+    fn();
+    setCurrentPage(1);
+  };
+
   const selectedCityLabel =
     selectedCity === "all" ? "Semua Kota" : selectedCity;
 
@@ -280,7 +290,7 @@ const ClientDiscover = () => {
                     <CommandGroup>
                       <CommandItem
                         value="all"
-                        onSelect={() => { setSelectedCity("all"); setCityOpen(false); }}
+                        onSelect={() => { handleFilterChange(() => setSelectedCity("all")); setCityOpen(false); }}
                       >
                         <span className={cn("font-medium", selectedCity === "all" && "text-primary")}>
                           Semua Kota
@@ -290,8 +300,9 @@ const ClientDiscover = () => {
                         <CommandItem
                           key={city.id}
                           value={city.name}
-                          onSelect={(val) => {
-                            setSelectedCity(val);
+                          onSelect={() => {
+                            // use closure value directly — cmdk v1 lowercases the `val` param
+                            handleFilterChange(() => setSelectedCity(city.name));
                             setCityOpen(false);
                           }}
                         >
@@ -309,7 +320,7 @@ const ClientDiscover = () => {
         </Popover>
 
         {/* Sort */}
-        <Select value={sortBy} onValueChange={setSortBy}>
+        <Select value={sortBy} onValueChange={(v) => handleFilterChange(() => setSortBy(v))}>
           <SelectTrigger className="w-[155px] h-9">
             <SlidersHorizontal className="h-3.5 w-3.5 mr-1.5 text-muted-foreground" />
             <SelectValue />
@@ -325,7 +336,7 @@ const ClientDiscover = () => {
         <Button
           variant={showOpenOnly ? "default" : "outline"}
           size="sm"
-          onClick={() => setShowOpenOnly(!showOpenOnly)}
+          onClick={() => handleFilterChange(() => setShowOpenOnly(!showOpenOnly))}
           className="gap-1"
         >
           <Clock className="h-3.5 w-3.5" /> Buka Sekarang
@@ -337,16 +348,16 @@ const ClientDiscover = () => {
       </div>
 
       {/* Shop List */}
-      <div className="space-y-4 pb-4">
+      <div className="space-y-6 pb-4">
         {filtered.length === 0 ? (
           <Card>
-            <CardContent className="p-10 text-center text-muted-foreground">
+            <CardContent className="py-14 text-center text-muted-foreground">
               <Scissors className="h-10 w-10 mx-auto mb-3 opacity-30" />
               <p>Tidak ada barbershop yang ditemukan.</p>
             </CardContent>
           </Card>
         ) : (
-          filtered.map((shop) => (
+          paginated.map((shop) => (
             <Link key={shop.slug} to={`/client/${shop.slug}`}>
               <Card className="hover:border-primary/40 transition-all hover:shadow-md cursor-pointer group">
                 <CardContent className="p-5">
@@ -411,6 +422,41 @@ const ClientDiscover = () => {
           ))
         )}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-1 pb-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+          >
+            &lsaquo; Sebelumnya
+          </Button>
+
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <Button
+              key={page}
+              variant={currentPage === page ? "default" : "outline"}
+              size="sm"
+              className="w-9"
+              onClick={() => setCurrentPage(page)}
+            >
+              {page}
+            </Button>
+          ))}
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+          >
+            Berikutnya &rsaquo;
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
