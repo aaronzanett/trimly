@@ -237,9 +237,9 @@ const Register = () => {
               />
               <Label htmlFor="terms" className="text-sm font-normal text-muted-foreground">
                 I agree to the{" "}
-                <a href="#" className="text-primary hover:underline">Terms of Service</a>
-                {" "}and{" "}
-                <a href="#" className="text-primary hover:underline">Privacy Policy</a>
+                <Link to="/terms" target="_blank" className="text-primary hover:underline">Syarat & Ketentuan</Link>
+                {" "}dan{" "}
+                <Link to="/privacy" target="_blank" className="text-primary hover:underline">Kebijakan Privasi</Link>
               </Label>
             </div>
             {errors.terms && (
