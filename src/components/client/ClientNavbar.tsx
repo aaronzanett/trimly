@@ -10,12 +10,14 @@ export function ClientNavbar() {
   const { shopSlug: paramSlug } = useParams<{ shopSlug?: string }>();
   const location = useLocation();
 
-  // Persist the shopSlug whenever we're inside a shop route
+  // Persist shopSlug when inside a shop route; clear it when on the discover page
   useEffect(() => {
     if (paramSlug) {
       localStorage.setItem(SHOP_SLUG_KEY, paramSlug);
+    } else if (location.pathname === "/client") {
+      localStorage.removeItem(SHOP_SLUG_KEY);
     }
-  }, [paramSlug]);
+  }, [paramSlug, location.pathname]);
 
   // Use param slug if present, otherwise fall back to the last persisted slug
   const shopSlug = paramSlug || localStorage.getItem(SHOP_SLUG_KEY) || undefined;
