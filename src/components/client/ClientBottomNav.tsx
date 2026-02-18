@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { Home, CalendarPlus, ShoppingBag, Clock, User } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -8,17 +8,21 @@ const SHOP_SLUG_KEY = "client_last_shop_slug";
 export function ClientBottomNav() {
   const { shopSlug: paramSlug } = useParams<{ shopSlug?: string }>();
   const location = useLocation();
+  const [shopSlug, setShopSlug] = useState<string | undefined>(
+    paramSlug || localStorage.getItem(SHOP_SLUG_KEY) || undefined
+  );
 
-  // Mirror the same persistence logic as ClientNavbar
   useEffect(() => {
     if (paramSlug) {
       localStorage.setItem(SHOP_SLUG_KEY, paramSlug);
+      setShopSlug(paramSlug);
     } else if (location.pathname === "/client") {
       localStorage.removeItem(SHOP_SLUG_KEY);
+      setShopSlug(undefined);
+    } else {
+      setShopSlug(localStorage.getItem(SHOP_SLUG_KEY) || undefined);
     }
   }, [paramSlug, location.pathname]);
-
-  const shopSlug = paramSlug || localStorage.getItem(SHOP_SLUG_KEY) || undefined;
 
   // When inside a shop context, show shop-specific nav
   if (shopSlug) {
