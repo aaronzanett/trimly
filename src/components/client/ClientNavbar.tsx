@@ -1,11 +1,24 @@
+import { useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { Scissors, ShoppingCart, User, LogIn, Home, CalendarPlus, ShoppingBag, Clock, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+const SHOP_SLUG_KEY = "client_last_shop_slug";
+
 export function ClientNavbar() {
-  const { shopSlug } = useParams<{ shopSlug?: string }>();
+  const { shopSlug: paramSlug } = useParams<{ shopSlug?: string }>();
   const location = useLocation();
+
+  // Persist the shopSlug whenever we're inside a shop route
+  useEffect(() => {
+    if (paramSlug) {
+      localStorage.setItem(SHOP_SLUG_KEY, paramSlug);
+    }
+  }, [paramSlug]);
+
+  // Use param slug if present, otherwise fall back to the last persisted slug
+  const shopSlug = paramSlug || localStorage.getItem(SHOP_SLUG_KEY) || undefined;
 
   const globalLinks = [
     { label: "Temukan", path: "/client", icon: Compass, exact: true },
