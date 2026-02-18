@@ -46,7 +46,10 @@ import AccountProfile from "./pages/staff/AccountProfile";
 
 // Client Portal
 import { ClientLayout } from "./components/client/ClientLayout";
-import ClientHome from "./pages/client/ClientHome";
+import ClientDiscover from "./pages/client/ClientDiscover";
+import ClientLogin from "./pages/client/ClientLogin";
+import ClientRegister from "./pages/client/ClientRegister";
+import ClientShopProfile from "./pages/client/ClientShopProfile";
 import ClientBooking from "./pages/client/ClientBooking";
 import ClientShop from "./pages/client/ClientShop";
 import ClientCheckout from "./pages/client/ClientCheckout";
@@ -107,14 +110,17 @@ const App = () => (
             <Route path="profile" element={<AccountProfile />} />
           </Route>
 
-          {/* Client Portal Routes (Dynamic Tenant) */}
-          <Route path="/:tenant/client" element={<ClientLayout />}>
-            <Route index element={<ClientHome />} />
-            <Route path="booking" element={<ClientBooking />} />
-            <Route path="shop" element={<ClientShop />} />
-            <Route path="checkout" element={<ClientCheckout />} />
+          {/* Client Portal Routes */}
+          <Route path="/client" element={<ClientLayout />}>
+            <Route index element={<ClientDiscover />} />
+            <Route path="login" element={<ClientLogin />} />
+            <Route path="register" element={<ClientRegister />} />
             <Route path="history" element={<ClientHistory />} />
             <Route path="profile" element={<ClientProfile />} />
+            <Route path=":shopSlug" element={<ClientShopProfile />} />
+            <Route path=":shopSlug/booking" element={<ClientBooking />} />
+            <Route path=":shopSlug/shop" element={<ClientShop />} />
+            <Route path=":shopSlug/checkout" element={<ClientCheckout />} />
           </Route>
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
