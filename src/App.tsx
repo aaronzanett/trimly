@@ -10,6 +10,8 @@ import AdminLogin from "./pages/AdminLogin";
 import Register from "./pages/Register";
 import VerifyCode from "./pages/VerifyCode";
 import NotFound from "./pages/NotFound";
+import TermsOfService from "./pages/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import { AdminLayout } from "./components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import TenantManagement from "./pages/admin/TenantManagement";
@@ -66,6 +68,8 @@ const App = () => (
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/register" element={<Register />} />
           <Route path="/verify-code" element={<VerifyCode />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
           
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
