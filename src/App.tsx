@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
+import { AuthProvider } from "./contexts/AuthContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import AdminLogin from "./pages/AdminLogin";
@@ -64,68 +66,105 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/admin-login" element={<AdminLogin />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/verify-code" element={<VerifyCode />} />
-          <Route path="/terms" element={<TermsOfService />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="tenants" element={<TenantManagement />} />
-            <Route path="subscriptions" element={<SubscriptionPlans />} />
-            <Route path="users" element={<PlatformUsers />} />
-            <Route path="billing" element={<BillingMonitor />} />
-            <Route path="system" element={<SystemControl />} />
-          </Route>
+        <AuthProvider>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/admin-login" element={<AdminLogin />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/verify-code" element={<VerifyCode />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
 
-          {/* Owner Portal Routes (Dynamic Tenant) */}
-          <Route path="/:tenant" element={<OwnerLayout />}>
-            <Route path="dashboard" element={<OwnerDashboard />} />
-            <Route path="branches" element={<BranchManagement />} />
-            <Route path="employees" element={<EmployeeManagement />} />
-            <Route path="commission" element={<CommissionScheme />} />
-            <Route path="finance" element={<BusinessFinance />} />
-            <Route path="services" element={<Services />} />
-            <Route path="products" element={<Products />} />
-            <Route path="settings" element={<TenantSettings />} />
-            <Route path="reports/financial" element={<FinancialReports />} />
-            <Route path="reports/sales" element={<SalesReports />} />
-            <Route path="reports/employees" element={<EmployeeReports />} />
-            <Route path="reports/products" element={<ProductReports />} />
-          </Route>
+            {/* Admin Routes */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute role="admin">
+                  <AdminLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="tenants" element={<TenantManagement />} />
+              <Route path="subscriptions" element={<SubscriptionPlans />} />
+              <Route path="users" element={<PlatformUsers />} />
+              <Route path="billing" element={<BillingMonitor />} />
+              <Route path="system" element={<SystemControl />} />
+            </Route>
 
-          {/* Staff Portal Routes (Dynamic Tenant) */}
-          <Route path="/:tenant/staff" element={<StaffLayout />}>
-            <Route path="dashboard" element={<StaffDashboard />} />
-            <Route path="attendance" element={<AttendanceShift />} />
-            <Route path="pos" element={<POSCashier />} />
-            <Route path="commission" element={<CommissionSalary />} />
-            <Route path="cash-advance" element={<CashAdvance />} />
-            <Route path="profile" element={<AccountProfile />} />
-          </Route>
+            {/* Owner Portal Routes (Dynamic Tenant) */}
+            <Route
+              path="/:tenant"
+              element={
+                <ProtectedRoute role="owner">
+                  <OwnerLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="dashboard" element={<OwnerDashboard />} />
+              <Route path="branches" element={<BranchManagement />} />
+              <Route path="employees" element={<EmployeeManagement />} />
+              <Route path="commission" element={<CommissionScheme />} />
+              <Route path="finance" element={<BusinessFinance />} />
+              <Route path="services" element={<Services />} />
+              <Route path="products" element={<Products />} />
+              <Route path="settings" element={<TenantSettings />} />
+              <Route path="reports/financial" element={<FinancialReports />} />
+              <Route path="reports/sales" element={<SalesReports />} />
+              <Route path="reports/employees" element={<EmployeeReports />} />
+              <Route path="reports/products" element={<ProductReports />} />
+            </Route>
 
-          {/* Client Portal Routes */}
-          <Route path="/client" element={<ClientLayout />}>
-            <Route index element={<ClientDiscover />} />
-            <Route path="login" element={<ClientLogin />} />
-            <Route path="register" element={<ClientRegister />} />
-            <Route path="history" element={<ClientHistory />} />
-            <Route path="profile" element={<ClientProfile />} />
-            <Route path=":shopSlug" element={<ClientShopProfile />} />
-            <Route path=":shopSlug/booking" element={<ClientBooking />} />
-            <Route path=":shopSlug/shop" element={<ClientShop />} />
-            <Route path=":shopSlug/checkout" element={<ClientCheckout />} />
-          </Route>
-          
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            {/* Staff Portal Routes (Dynamic Tenant) */}
+            <Route
+              path="/:tenant/staff"
+              element={
+                <ProtectedRoute role="staff">
+                  <StaffLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="dashboard" element={<StaffDashboard />} />
+              <Route path="attendance" element={<AttendanceShift />} />
+              <Route path="pos" element={<POSCashier />} />
+              <Route path="commission" element={<CommissionSalary />} />
+              <Route path="cash-advance" element={<CashAdvance />} />
+              <Route path="profile" element={<AccountProfile />} />
+            </Route>
+
+            {/* Client Portal Routes */}
+            <Route path="/client" element={<ClientLayout />}>
+              <Route index element={<ClientDiscover />} />
+              <Route path="login" element={<ClientLogin />} />
+              <Route path="register" element={<ClientRegister />} />
+              <Route
+                path="history"
+                element={
+                  <ProtectedRoute role="client">
+                    <ClientHistory />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="profile"
+                element={
+                  <ProtectedRoute role="client">
+                    <ClientProfile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path=":shopSlug" element={<ClientShopProfile />} />
+              <Route path=":shopSlug/booking" element={<ClientBooking />} />
+              <Route path=":shopSlug/shop" element={<ClientShop />} />
+              <Route path=":shopSlug/checkout" element={<ClientCheckout />} />
+            </Route>
+
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

@@ -1,15 +1,18 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Scissors, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ClientLogin = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+  const { login } = useAuth();
   const [showPass, setShowPass] = useState(false);
   const [form, setForm] = useState({ email: "", password: "" });
 
@@ -19,8 +22,14 @@ const ClientLogin = () => {
       toast({ title: "Lengkapi semua kolom", variant: "destructive" });
       return;
     }
+    const result = login(form.email, form.password);
+    if (!result.success) {
+      toast({ title: "Login Gagal", description: result.error, variant: "destructive" });
+      return;
+    }
     toast({ title: "Selamat datang kembali!", description: "Login berhasil." });
-    navigate("/client");
+    const from = (location.state as any)?.from?.pathname;
+    navigate(from ?? "/client", { replace: true });
   };
 
   return (
@@ -75,7 +84,14 @@ const ClientLogin = () => {
               <Button type="submit" className="w-full">Masuk</Button>
             </form>
 
-            <div className="mt-6 text-center text-sm">
+            {/* Demo hint */}
+            <div className="mt-4 p-3 bg-muted/50 rounded-lg border border-border text-xs text-muted-foreground space-y-0.5">
+              <p className="font-medium text-foreground text-sm">Demo akun client:</p>
+              <p>Email: <span className="font-mono">client@trimly.com</span></p>
+              <p>Kata sandi: <span className="font-mono">client123</span></p>
+            </div>
+
+            <div className="mt-4 text-center text-sm">
               <span className="text-muted-foreground">Belum punya akun? </span>
               <Link to="/client/register" className="text-primary hover:underline font-medium">
                 Daftar sekarang
