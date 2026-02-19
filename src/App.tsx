@@ -136,7 +136,14 @@ const App = () => (
 
             {/* Client Portal Routes */}
             <Route path="/client" element={<ClientLayout />}>
-              <Route index element={<ClientDiscover />} />
+              <Route
+                index
+                element={
+                  <ProtectedRoute role="client">
+                    <ClientDiscover />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="login" element={<ClientLogin />} />
               <Route path="register" element={<ClientRegister />} />
               <Route
