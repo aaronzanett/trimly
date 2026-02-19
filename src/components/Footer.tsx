@@ -31,19 +31,19 @@ const Footer = () => {
       ],
     },
     {
-      title: "Masuk Sebagai",
+      title: "Login As",
       links: [
         { label: "Admin", to: "/admin-login" },
         { label: "Owner / Staff", to: "/login" },
-        { label: "Pelanggan", to: "/client/login" },
-        { label: "Daftar Baru", to: "/register" },
+        { label: "Client", to: "/client/login" },
+        { label: "Register", to: "/register" },
       ],
     },
     {
-      title: "Perusahaan",
+      title: "Company",
       links: [
-        { label: "Tentang Kami", href: "#" },
-        { label: "Karir", href: "#" },
+        { label: "About Us", href: "#" },
+        { label: "Careers", href: "#" },
         { label: "Blog", href: "#" },
         { label: "Press", href: "#" },
       ],
@@ -51,9 +51,9 @@ const Footer = () => {
     {
       title: "Legal",
       links: [
-        { label: "Syarat & Ketentuan", to: "/terms" },
-        { label: "Kebijakan Privasi", to: "/privacy" },
-        { label: "Keamanan", href: "#" },
+        { label: "Terms of Service", to: "/terms" },
+        { label: "Privacy Policy", to: "/privacy" },
+        { label: "Security", href: "#" },
       ],
     },
   ];
@@ -77,7 +77,7 @@ const Footer = () => {
               </span>
             </a>
             <p className="font-body text-sm text-muted-foreground leading-relaxed">
-              Platform all-in-one untuk barbershop modern Indonesia.
+              The all-in-one platform for modern barbershops.
             </p>
           </div>
 
