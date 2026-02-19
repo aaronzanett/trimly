@@ -31,8 +31,8 @@ const ClientRegister = () => {
       toast({ title: "Setujui syarat & ketentuan terlebih dahulu", variant: "destructive" });
       return;
     }
-    toast({ title: "Pendaftaran berhasil!", description: "Selamat datang di Trimly." });
-    navigate("/client");
+    // Redirect to email verification step, passing email for display
+    navigate("/client/verify", { state: { email: form.email } });
   };
 
   return (
