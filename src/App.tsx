@@ -51,6 +51,7 @@ import { ClientLayout } from "./components/client/ClientLayout";
 import ClientDiscover from "./pages/client/ClientDiscover";
 import ClientLogin from "./pages/client/ClientLogin";
 import ClientRegister from "./pages/client/ClientRegister";
+import ClientVerifyCode from "./pages/client/ClientVerifyCode";
 import ClientShopProfile from "./pages/client/ClientShopProfile";
 import ClientBooking from "./pages/client/ClientBooking";
 import ClientShop from "./pages/client/ClientShop";
@@ -146,6 +147,7 @@ const App = () => (
               />
               <Route path="login" element={<ClientLogin />} />
               <Route path="register" element={<ClientRegister />} />
+              <Route path="verify" element={<ClientVerifyCode />} />
               <Route
                 path="history"
                 element={
