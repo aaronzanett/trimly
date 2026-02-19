@@ -6,7 +6,8 @@ import { Link } from "react-router-dom";
 const plans = [
   {
     name: "Starter",
-    price: "149.000",
+    monthlyPrice: "149.000",
+    dailyPrice: "4.967",
     description: "Perfect for solo barbers getting started",
     features: [
       "1 Barber profile",
@@ -19,7 +20,8 @@ const plans = [
   },
   {
     name: "Professional",
-    price: "229.000",
+    monthlyPrice: "229.000",
+    dailyPrice: "7.633",
     description: "For growing barbershops with a team",
     features: [
       "Up to 5 Barber profiles",
@@ -34,7 +36,8 @@ const plans = [
   },
   {
     name: "Enterprise",
-    price: "299.000",
+    monthlyPrice: "299.000",
+    dailyPrice: "9.967",
     description: "For multi-location barbershop chains",
     features: [
       "Unlimited Barber profiles",
@@ -102,13 +105,18 @@ const Pricing = () => {
                 <p className="font-body text-sm text-muted-foreground mb-6">
                   {plan.description}
                 </p>
+              {/* Daily price — primary */}
                 <div className="flex items-baseline justify-center">
-                  <span className="font-body text-lg text-muted-foreground">Rp</span>
+                  <span className="font-body text-base text-muted-foreground">Rp</span>
                   <span className="font-display text-4xl font-bold text-foreground ml-1">
-                    {plan.price}
+                    {plan.dailyPrice}
                   </span>
-                  <span className="font-body text-muted-foreground ml-2">/bulan</span>
+                  <span className="font-body text-muted-foreground ml-2">/hari</span>
                 </div>
+                {/* Monthly price — secondary */}
+                <p className="font-body text-sm text-muted-foreground mt-1">
+                  Rp {plan.monthlyPrice}/bulan
+                </p>
               </div>
 
               <ul className="space-y-4 mb-8">
