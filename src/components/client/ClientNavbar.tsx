@@ -93,7 +93,7 @@ export function ClientNavbar() {
         </div>
 
         {/* Right actions */}
-        <div className="flex items-center gap-1 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           {shopSlug && (
             <Button variant="ghost" size="icon" asChild>
               <Link to={`/client/${shopSlug}/checkout`} title="Keranjang">
@@ -104,16 +104,18 @@ export function ClientNavbar() {
           {user ? (
             <Button
               variant="ghost"
-              size="icon"
-              title="Keluar"
+              size="sm"
               onClick={() => { logout(); navigate("/client/login"); }}
+              className="flex items-center gap-1.5"
             >
-              <LogOut className="h-5 w-5" />
+              <LogOut className="h-4 w-4" />
+              <span className="hidden sm:inline">Keluar</span>
             </Button>
           ) : (
-            <Button variant="ghost" size="icon" asChild>
-              <Link to="/client/login" title="Masuk">
-                <LogIn className="h-5 w-5" />
+            <Button variant="ghost" size="sm" asChild className="flex items-center gap-1.5">
+              <Link to="/client/login">
+                <LogIn className="h-4 w-4" />
+                <span className="hidden sm:inline">Masuk</span>
               </Link>
             </Button>
           )}
