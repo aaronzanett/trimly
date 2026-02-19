@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
-import { Home, CalendarPlus, ShoppingBag, Clock, User } from "lucide-react";
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
+import { Home, CalendarPlus, ShoppingBag, Clock, User, LogOut, LogIn } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 
 const SHOP_SLUG_KEY = "client_last_shop_slug";
 
 export function ClientBottomNav() {
   const { shopSlug: paramSlug } = useParams<{ shopSlug?: string }>();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [shopSlug, setShopSlug] = useState<string | undefined>(
     paramSlug || localStorage.getItem(SHOP_SLUG_KEY) || undefined
   );
@@ -54,6 +57,20 @@ export function ClientBottomNav() {
               </Link>
             );
           })}
+          {user ? (
+            <button
+              onClick={() => { logout(); navigate("/client/login"); }}
+              className="flex flex-col items-center gap-1 text-xs text-muted-foreground transition-colors"
+            >
+              <LogOut className="h-5 w-5" />
+              <span>Keluar</span>
+            </button>
+          ) : (
+            <Link to="/client/login" className="flex flex-col items-center gap-1 text-xs text-muted-foreground transition-colors">
+              <LogIn className="h-5 w-5" />
+              <span>Masuk</span>
+            </Link>
+          )}
         </div>
       </nav>
     );
@@ -87,6 +104,20 @@ export function ClientBottomNav() {
             </Link>
           );
         })}
+        {user ? (
+          <button
+            onClick={() => { logout(); navigate("/client/login"); }}
+            className="flex flex-col items-center gap-1 text-xs text-muted-foreground transition-colors"
+          >
+            <LogOut className="h-5 w-5" />
+            <span>Keluar</span>
+          </button>
+        ) : (
+          <Link to="/client/login" className="flex flex-col items-center gap-1 text-xs text-muted-foreground transition-colors">
+            <LogIn className="h-5 w-5" />
+            <span>Masuk</span>
+          </Link>
+        )}
       </div>
     </nav>
   );

@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
-import { Scissors, ShoppingCart, User, LogIn, Home, CalendarPlus, ShoppingBag, Clock, Compass } from "lucide-react";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
+import { Scissors, ShoppingCart, User, LogIn, LogOut, Home, CalendarPlus, ShoppingBag, Clock, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 
 const SHOP_SLUG_KEY = "client_last_shop_slug";
 
 export function ClientNavbar() {
   const { shopSlug: paramSlug } = useParams<{ shopSlug?: string }>();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [shopSlug, setShopSlug] = useState<string | undefined>(
     paramSlug || localStorage.getItem(SHOP_SLUG_KEY) || undefined
   );
@@ -98,11 +101,22 @@ export function ClientNavbar() {
               </Link>
             </Button>
           )}
-          <Button variant="ghost" size="icon" asChild>
-            <Link to="/client/login" title="Masuk">
-              <LogIn className="h-5 w-5" />
-            </Link>
-          </Button>
+          {user ? (
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Keluar"
+              onClick={() => { logout(); navigate("/client/login"); }}
+            >
+              <LogOut className="h-5 w-5" />
+            </Button>
+          ) : (
+            <Button variant="ghost" size="icon" asChild>
+              <Link to="/client/login" title="Masuk">
+                <LogIn className="h-5 w-5" />
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
     </nav>
