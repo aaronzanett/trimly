@@ -21,6 +21,7 @@ import SubscriptionPlans from "./pages/admin/SubscriptionPlans";
 import PlatformUsers from "./pages/admin/PlatformUsers";
 import BillingMonitor from "./pages/admin/BillingMonitor";
 import SystemControl from "./pages/admin/SystemControl";
+import ContentManagement from "./pages/admin/ContentManagement";
 
 // Owner Portal
 import { OwnerLayout } from "./components/owner/OwnerLayout";
@@ -93,6 +94,7 @@ const App = () => (
               <Route path="users" element={<PlatformUsers />} />
               <Route path="billing" element={<BillingMonitor />} />
               <Route path="system" element={<SystemControl />} />
+              <Route path="content" element={<ContentManagement />} />
             </Route>
 
             {/* Owner Portal Routes (Dynamic Tenant) */}

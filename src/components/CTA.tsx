@@ -2,8 +2,11 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { getFrontPageContent } from "@/lib/contentStore";
 
 const CTA = () => {
+  const content = getFrontPageContent();
+
   return (
     <section className="py-24 bg-background relative overflow-hidden">
       {/* Background decoration */}
@@ -19,11 +22,11 @@ const CTA = () => {
           className="max-w-3xl mx-auto text-center"
         >
           <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Ready to Transform Your{" "}
-            <span className="text-gradient-gold">Barbershop?</span>
+            {content.ctaHeadline}{" "}
+            <span className="text-gradient-gold">{content.ctaHeadlineHighlight}</span>
           </h2>
           <p className="font-body text-lg text-muted-foreground mb-10 max-w-xl mx-auto">
-            Join hundreds of barbershops already using Trimly to streamline their operations and grow their business.
+            {content.ctaSubheadline}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button variant="hero" size="xl" asChild>
@@ -33,7 +36,7 @@ const CTA = () => {
               </Link>
             </Button>
             <p className="font-body text-sm text-muted-foreground">
-              No credit card required • 14-day free trial
+              {content.ctaNote}
             </p>
           </div>
         </motion.div>

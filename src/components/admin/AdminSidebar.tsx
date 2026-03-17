@@ -1,4 +1,4 @@
-import { LayoutDashboard, Building2, CreditCard, Users, LogOut, Shield, Receipt, Settings } from "lucide-react";
+import { LayoutDashboard, Building2, CreditCard, Users, LogOut, Shield, Receipt, Settings, FileText } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
@@ -22,6 +22,7 @@ const menuItems = [
   { title: "Platform Users", url: "/admin/users", icon: Users },
   { title: "Billing Monitor", url: "/admin/billing", icon: Receipt },
   { title: "System Control", url: "/admin/system", icon: Settings },
+  { title: "Content Management", url: "/admin/content", icon: FileText },
 ];
 
 export function AdminSidebar() {
