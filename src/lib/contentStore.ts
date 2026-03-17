@@ -4,6 +4,7 @@ export interface HeroStat {
   title: string;
   description: string;
   value: string;
+  icon: string; // lucide icon name in kebab-case e.g. "calendar", "users", "trending-up"
 }
 
 export interface TestimonialItem {
