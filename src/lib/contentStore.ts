@@ -36,9 +36,9 @@ export const defaultContent: FrontPageContent = {
   heroHeadlineHighlight: "Barbershop Software",
   heroSubheadline: "Streamline bookings, manage your team, and grow your business with the all-in-one platform designed exclusively for modern barbershops.",
   heroStats: [
-    { title: "Smart Booking", description: "Automated scheduling", value: "50K+" },
-    { title: "Team Management", description: "Staff & commissions", value: "500+" },
-    { title: "Business Growth", description: "Analytics & reports", value: "99.9%" },
+    { title: "Smart Booking", description: "Automated scheduling", value: "50K+", icon: "calendar" },
+    { title: "Team Management", description: "Staff & commissions", value: "500+", icon: "users" },
+    { title: "Business Growth", description: "Analytics & reports", value: "99.9%", icon: "trending-up" },
   ],
   testimonials: [
     {

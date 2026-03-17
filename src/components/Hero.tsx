@@ -1,30 +1,46 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Calendar, Users, TrendingUp } from "lucide-react";
+import {
+  ArrowRight, Play, Calendar, Users, TrendingUp, Scissors, Clock,
+  DollarSign, BarChart3, Heart, Shield, Zap, Award, Store, MapPin,
+  Phone, Mail, ThumbsUp, Sparkles, Target, Rocket,
+} from "lucide-react";
 import { getFrontPageContent } from "@/lib/contentStore";
 
 const iconMap: Record<string, React.ElementType> = {
-  Calendar, Users, TrendingUp,
+  "calendar": Calendar,
+  "users": Users,
+  "trending-up": TrendingUp,
+  "scissors": Scissors,
+  "clock": Clock,
+  "dollar-sign": DollarSign,
+  "bar-chart-3": BarChart3,
+  "heart": Heart,
+  "shield": Shield,
+  "zap": Zap,
+  "award": Award,
+  "store": Store,
+  "map-pin": MapPin,
+  "phone": Phone,
+  "mail": Mail,
+  "thumbs-up": ThumbsUp,
+  "sparkles": Sparkles,
+  "target": Target,
+  "rocket": Rocket,
 };
-
-const defaultIcons = [Calendar, Users, TrendingUp];
 
 const Hero = () => {
   const content = getFrontPageContent();
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Background */}
       <div className="absolute inset-0 bg-background" />
-      
-      {/* Decorative grid pattern */}
       <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
         backgroundSize: '40px 40px'
       }} />
 
-      {/* Floating accent shapes */}
       <motion.div
         animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -43,7 +59,6 @@ const Hero = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -56,7 +71,6 @@ const Hero = () => {
             </span>
           </motion.div>
 
-          {/* Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -68,7 +82,6 @@ const Hero = () => {
             <span className="text-gradient-gold">{content.heroHeadlineHighlight}</span>
           </motion.h1>
 
-          {/* Subheadline */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -78,7 +91,6 @@ const Hero = () => {
             {content.heroSubheadline}
           </motion.p>
 
-          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -97,7 +109,6 @@ const Hero = () => {
             </Button>
           </motion.div>
 
-          {/* Feature cards row */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -105,7 +116,7 @@ const Hero = () => {
             className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 max-w-3xl mx-auto"
           >
             {content.heroStats.map((item, i) => {
-              const Icon = defaultIcons[i % defaultIcons.length];
+              const Icon = iconMap[item.icon] || Calendar;
               return (
                 <motion.div
                   key={i}
