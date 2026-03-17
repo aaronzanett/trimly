@@ -1,4 +1,4 @@
-import { LayoutDashboard, Building2, CreditCard, Users, LogOut, Shield, Receipt, Settings } from "lucide-react";
+import { LayoutDashboard, Building2, CreditCard, Users, LogOut, Shield, Receipt, Settings, FileText } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
