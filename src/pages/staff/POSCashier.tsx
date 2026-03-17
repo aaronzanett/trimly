@@ -271,6 +271,58 @@ const POSCashier = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* Customer Search */}
+            <div className="space-y-2">
+              <Label className="text-[hsl(var(--admin-card-foreground))] text-xs font-medium">Customer</Label>
+              {selectedCustomer ? (
+                <div className="flex items-center gap-2 p-2.5 rounded-lg bg-primary/5 border border-primary/20">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <User className="w-4 h-4 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-[hsl(var(--admin-card-foreground))] truncate">{selectedCustomer.name}</p>
+                    <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">{selectedCustomer.phone}</p>
+                  </div>
+                  <button onClick={clearCustomer} className="text-[hsl(var(--admin-muted-foreground))] hover:text-destructive">
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-[hsl(var(--admin-muted-foreground))]" />
+                  <Input
+                    placeholder="Search customer name or phone..."
+                    value={customerSearch}
+                    onChange={e => { setCustomerSearch(e.target.value); setShowCustomerDropdown(true); }}
+                    onFocus={() => setShowCustomerDropdown(true)}
+                    onBlur={() => setTimeout(() => setShowCustomerDropdown(false), 200)}
+                    className="pl-9 border-[hsl(var(--admin-border))] text-sm"
+                  />
+                  {showCustomerDropdown && filteredCustomers.length > 0 && (
+                    <div className="absolute z-10 mt-1 w-full bg-[hsl(var(--admin-card))] border border-[hsl(var(--admin-border))] rounded-lg shadow-lg max-h-40 overflow-auto">
+                      {filteredCustomers.map(c => (
+                        <button
+                          key={c.id}
+                          onMouseDown={() => selectCustomer(c)}
+                          className="w-full flex items-center gap-2 p-2.5 hover:bg-[hsl(var(--admin-row-hover))] text-left"
+                        >
+                          <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                            <User className="w-3.5 h-3.5 text-primary" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-[hsl(var(--admin-card-foreground))]">{c.name}</p>
+                            <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">{c.phone}</p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <Separator className="bg-[hsl(var(--admin-border))]" />
+
             {cart.length === 0 ? (
               <p className="text-center text-[hsl(var(--admin-muted-foreground))] py-8">Cart is empty</p>
             ) : (
@@ -283,7 +335,7 @@ const POSCashier = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-sm text-[hsl(var(--admin-card-foreground))]">Rp {(item.price * item.qty).toLocaleString()}</span>
-                      <button onClick={() => removeFromCart(item.id, item.barber)} className="text-red-500 hover:text-red-700">
+                      <button onClick={() => removeFromCart(item.id, item.barber)} className="text-destructive hover:text-destructive/80">
                         <X className="w-4 h-4" />
                       </button>
                     </div>
@@ -306,50 +358,187 @@ const POSCashier = () => {
 
       {/* Payment Dialog */}
       <Dialog open={isPaymentOpen} onOpenChange={setIsPaymentOpen}>
-        <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))]">
+        <DialogContent className="bg-[hsl(var(--admin-card))] border-[hsl(var(--admin-border))] max-w-md">
           <DialogHeader>
             <DialogTitle className="text-[hsl(var(--admin-card-foreground))]">Payment</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
+            {/* Customer info in payment */}
+            {selectedCustomer && (
+              <div className="flex items-center gap-2 p-2 rounded-lg bg-primary/5">
+                <User className="w-4 h-4 text-primary" />
+                <span className="text-sm text-[hsl(var(--admin-card-foreground))]">{selectedCustomer.name}</span>
+              </div>
+            )}
+
             <div className="text-center">
+              <p className="text-sm text-[hsl(var(--admin-muted-foreground))]">Total Amount</p>
               <p className="text-2xl font-bold text-primary">Rp {cartTotal.toLocaleString()}</p>
             </div>
+
             <div className="space-y-2">
               <Label className="text-[hsl(var(--admin-card-foreground))]">Payment Method</Label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 {[
                   { value: "cash", label: "Cash", icon: Banknote },
                   { value: "card", label: "Card", icon: CreditCard },
-                  { value: "qris", label: "QRIS", icon: Wallet },
+                  { value: "qris", label: "QRIS", icon: QrCode },
+                  { value: "transfer", label: "Transfer", icon: Building2 },
                 ].map(m => (
                   <button
                     key={m.value}
                     onClick={() => setPaymentMethod(m.value)}
-                    className={`p-3 rounded-lg border flex flex-col items-center gap-1 transition-colors ${
+                    className={`p-3 rounded-lg border flex items-center gap-2 transition-colors ${
                       paymentMethod === m.value
                         ? "border-primary bg-primary/10 text-primary"
                         : "border-[hsl(var(--admin-border))] text-[hsl(var(--admin-muted-foreground))]"
                     }`}
                   >
                     <m.icon className="w-5 h-5" />
-                    <span className="text-sm">{m.label}</span>
+                    <span className="text-sm font-medium">{m.label}</span>
                   </button>
                 ))}
               </div>
             </div>
+
+            {/* Cash UI */}
             {paymentMethod === "cash" && (
-              <div className="space-y-2">
+              <div className="space-y-3 p-3 rounded-lg border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-background))]">
                 <Label className="text-[hsl(var(--admin-card-foreground))]">Cash Received</Label>
                 <Input
                   type="number"
                   value={cashReceived}
                   onChange={e => setCashReceived(e.target.value)}
-                  placeholder="Enter amount"
-                  className="border-[hsl(var(--admin-border))]"
+                  placeholder="Enter amount received"
+                  className="border-[hsl(var(--admin-border))] text-lg font-semibold"
                 />
+                <div className="flex gap-2 flex-wrap">
+                  {[50000, 100000, 200000, 500000].map(amount => (
+                    <Button
+                      key={amount}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCashReceived(String(amount))}
+                      className="border-[hsl(var(--admin-border))] text-xs"
+                    >
+                      Rp {amount.toLocaleString()}
+                    </Button>
+                  ))}
+                </div>
                 {parseInt(cashReceived) >= cartTotal && (
-                  <p className="text-sm text-green-600">Change: Rp {change.toLocaleString()}</p>
+                  <div className="flex items-center gap-2 p-2 rounded bg-green-500/10 text-green-600">
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span className="text-sm font-medium">Change: Rp {change.toLocaleString()}</span>
+                  </div>
                 )}
+              </div>
+            )}
+
+            {/* Card UI */}
+            {paymentMethod === "card" && (
+              <div className="space-y-3 p-3 rounded-lg border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-background))]">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-8 rounded bg-gradient-to-r from-blue-600 to-blue-400 flex items-center justify-center">
+                    <CreditCard className="w-5 h-3.5 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-[hsl(var(--admin-card-foreground))]">Card Payment</p>
+                    <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">Tap / Insert / Swipe on EDC machine</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {["Visa", "Mastercard", "Debit"].map(type => (
+                    <div key={type} className="text-center p-2 rounded border border-[hsl(var(--admin-border))]">
+                      <p className="text-xs font-medium text-[hsl(var(--admin-card-foreground))]">{type}</p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-center text-[hsl(var(--admin-muted-foreground))]">
+                  Please process on the EDC terminal and confirm once approved.
+                </p>
+              </div>
+            )}
+
+            {/* QRIS UI */}
+            {paymentMethod === "qris" && (
+              <div className="space-y-3 p-3 rounded-lg border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-background))]">
+                <div className="text-center space-y-3">
+                  <p className="text-sm font-medium text-[hsl(var(--admin-card-foreground))]">Scan QR Code to Pay</p>
+                  {/* QR Code placeholder */}
+                  <div className="mx-auto w-48 h-48 bg-white rounded-xl p-3 border border-[hsl(var(--admin-border))] shadow-sm">
+                    <div className="w-full h-full relative flex items-center justify-center">
+                      <svg viewBox="0 0 200 200" className="w-full h-full">
+                        {/* QR pattern */}
+                        <rect x="10" y="10" width="50" height="50" rx="4" fill="hsl(var(--foreground))" />
+                        <rect x="17" y="17" width="36" height="36" rx="2" fill="white" />
+                        <rect x="24" y="24" width="22" height="22" rx="1" fill="hsl(var(--foreground))" />
+                        
+                        <rect x="140" y="10" width="50" height="50" rx="4" fill="hsl(var(--foreground))" />
+                        <rect x="147" y="17" width="36" height="36" rx="2" fill="white" />
+                        <rect x="154" y="24" width="22" height="22" rx="1" fill="hsl(var(--foreground))" />
+                        
+                        <rect x="10" y="140" width="50" height="50" rx="4" fill="hsl(var(--foreground))" />
+                        <rect x="17" y="147" width="36" height="36" rx="2" fill="white" />
+                        <rect x="24" y="154" width="22" height="22" rx="1" fill="hsl(var(--foreground))" />
+                        
+                        {/* Data modules */}
+                        {[70,85,100,115,130].map(x => [70,85,100,115,130].map(y => (
+                          <rect key={`${x}-${y}`} x={x} y={y} width="12" height="12" rx="1" fill={Math.random() > 0.4 ? "hsl(var(--foreground))" : "transparent"} />
+                        )))}
+                        {[10,25,40,70,85,100].map(x => [70,85,100].map(y => (
+                          <rect key={`h${x}-${y}`} x={x} y={y} width="12" height="12" rx="1" fill={Math.random() > 0.5 ? "hsl(var(--foreground))" : "transparent"} />
+                        )))}
+                        {[70,85,100].map(x => [10,25,40].map(y => (
+                          <rect key={`v${x}-${y}`} x={x} y={y} width="12" height="12" rx="1" fill={Math.random() > 0.5 ? "hsl(var(--foreground))" : "transparent"} />
+                        )))}
+                      </svg>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">Supports GoPay, OVO, DANA, ShopeePay, LinkAja</p>
+                  </div>
+                  <Badge variant="outline" className="text-xs">
+                    <QrCode className="w-3 h-3 mr-1" /> QRIS Standard
+                  </Badge>
+                </div>
+              </div>
+            )}
+
+            {/* Bank Transfer UI */}
+            {paymentMethod === "transfer" && (
+              <div className="space-y-3 p-3 rounded-lg border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-background))]">
+                <p className="text-sm font-medium text-[hsl(var(--admin-card-foreground))]">Select Bank Account</p>
+                <div className="space-y-2">
+                  {bankAccounts.map(bank => (
+                    <div key={bank.bank} className="flex items-center justify-between p-3 rounded-lg border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-card))]">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                          <Building2 className="w-5 h-5 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-[hsl(var(--admin-card-foreground))]">{bank.bank}</p>
+                          <p className="text-xs text-[hsl(var(--admin-muted-foreground))] font-mono">{bank.accountNo}</p>
+                          <p className="text-xs text-[hsl(var(--admin-muted-foreground))]">{bank.accountName}</p>
+                        </div>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => copyToClipboard(bank.accountNo, bank.bank)}
+                        className="text-primary"
+                      >
+                        {copiedBank === bank.bank ? (
+                          <CheckCircle2 className="w-4 h-4" />
+                        ) : (
+                          <Copy className="w-4 h-4" />
+                        )}
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-center text-[hsl(var(--admin-muted-foreground))]">
+                  Confirm once the transfer has been received.
+                </p>
               </div>
             )}
           </div>
