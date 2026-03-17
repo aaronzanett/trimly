@@ -94,6 +94,7 @@ const App = () => (
               <Route path="users" element={<PlatformUsers />} />
               <Route path="billing" element={<BillingMonitor />} />
               <Route path="system" element={<SystemControl />} />
+              <Route path="content" element={<ContentManagement />} />
             </Route>
 
             {/* Owner Portal Routes (Dynamic Tenant) */}

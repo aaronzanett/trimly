@@ -1,9 +1,18 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Scissors, Calendar, Users, TrendingUp } from "lucide-react";
+import { ArrowRight, Play, Calendar, Users, TrendingUp } from "lucide-react";
+import { getFrontPageContent } from "@/lib/contentStore";
+
+const iconMap: Record<string, React.ElementType> = {
+  Calendar, Users, TrendingUp,
+};
+
+const defaultIcons = [Calendar, Users, TrendingUp];
 
 const Hero = () => {
+  const content = getFrontPageContent();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background */}
@@ -43,7 +52,7 @@ const Hero = () => {
           >
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span className="text-sm text-primary font-medium font-body">
-              Trusted by 500+ barbershops worldwide
+              {content.heroBadge}
             </span>
           </motion.div>
 
@@ -54,9 +63,9 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display text-5xl md:text-7xl font-bold text-foreground leading-tight mb-6"
           >
-            The Ultimate
+            {content.heroHeadline}
             <br />
-            <span className="text-gradient-gold">Barbershop Software</span>
+            <span className="text-gradient-gold">{content.heroHeadlineHighlight}</span>
           </motion.h1>
 
           {/* Subheadline */}
@@ -66,8 +75,7 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="font-body text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
           >
-            Streamline bookings, manage your team, and grow your business with 
-            the all-in-one platform designed exclusively for modern barbershops.
+            {content.heroSubheadline}
           </motion.p>
 
           {/* CTA Buttons */}
@@ -96,28 +104,27 @@ const Hero = () => {
             transition={{ duration: 0.7, delay: 0.5 }}
             className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 max-w-3xl mx-auto"
           >
-            {[
-              { icon: Calendar, title: "Smart Booking", desc: "Automated scheduling", value: "50K+" },
-              { icon: Users, title: "Team Management", desc: "Staff & commissions", value: "500+" },
-              { icon: TrendingUp, title: "Business Growth", desc: "Analytics & reports", value: "99.9%" },
-            ].map((item, i) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
-                className="group relative bg-card rounded-xl border border-border p-5 hover:border-primary/30 hover:shadow-lg transition-all duration-300"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <item.icon className="h-5 w-5 text-primary" />
+            {content.heroStats.map((item, i) => {
+              const Icon = defaultIcons[i % defaultIcons.length];
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
+                  className="group relative bg-card rounded-xl border border-border p-5 hover:border-primary/30 hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Icon className="h-5 w-5 text-primary" />
+                    </div>
+                    <span className="font-display text-2xl font-bold text-foreground">{item.value}</span>
                   </div>
-                  <span className="font-display text-2xl font-bold text-foreground">{item.value}</span>
-                </div>
-                <p className="font-display text-sm font-semibold text-foreground">{item.title}</p>
-                <p className="font-body text-xs text-muted-foreground">{item.desc}</p>
-              </motion.div>
-            ))}
+                  <p className="font-display text-sm font-semibold text-foreground">{item.title}</p>
+                  <p className="font-body text-xs text-muted-foreground">{item.description}</p>
+                </motion.div>
+              );
+            })}
           </motion.div>
         </div>
       </div>

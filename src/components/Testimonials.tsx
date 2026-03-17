@@ -1,31 +1,13 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
-
-const testimonials = [
-  {
-    name: "Rudi Hartono",
-    role: "Owner, Barbershop Elang Jaya",
-    content: "Trimly mengubah cara kami mengelola barbershop. Booking naik 40% dan no-show berkurang drastis. Luar biasa.",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-  },
-  {
-    name: "Bayu Setiawan",
-    role: "Head Barber, Urban Fades",
-    content: "Sistem jadwalnya sangat intuitif. Pelanggan saya suka bisa booking 24/7 langsung dari HP mereka.",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-  },
-  {
-    name: "Arief Hidayat",
-    role: "Founder, Hidayat Barbershop",
-    content: "Kami sudah pakai Trimly selama 2 tahun. Fitur analitiknya membantu kami memahami bisnis lebih baik dari sebelumnya.",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
-  },
-];
+import { getFrontPageContent } from "@/lib/contentStore";
 
 const Testimonials = () => {
+  const content = getFrontPageContent();
+  const testimonials = content.testimonials;
+
+  if (testimonials.length === 0) return null;
+
   return (
     <section id="testimonials" className="py-24 bg-card">
       <div className="container mx-auto px-6">
@@ -52,7 +34,7 @@ const Testimonials = () => {
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {testimonials.map((testimonial, index) => (
             <motion.div
-              key={testimonial.name}
+              key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -62,10 +44,7 @@ const Testimonials = () => {
               {/* Stars */}
               <div className="flex gap-1 mb-6">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className="w-5 h-5 fill-primary text-primary"
-                  />
+                  <Star key={i} className="w-5 h-5 fill-primary text-primary" />
                 ))}
               </div>
 
