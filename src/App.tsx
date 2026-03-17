@@ -21,6 +21,7 @@ import SubscriptionPlans from "./pages/admin/SubscriptionPlans";
 import PlatformUsers from "./pages/admin/PlatformUsers";
 import BillingMonitor from "./pages/admin/BillingMonitor";
 import SystemControl from "./pages/admin/SystemControl";
+import ContentManagement from "./pages/admin/ContentManagement";
 
 // Owner Portal
 import { OwnerLayout } from "./components/owner/OwnerLayout";
