@@ -133,14 +133,16 @@ const POSCashier = () => {
       time: new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false }),
       items: cart.map(c => c.name).join(", "),
       total: cartTotal,
-      payment: paymentMethod === "cash" ? "Cash" : paymentMethod === "card" ? "Card" : "QRIS",
+      payment: paymentMethod === "cash" ? "Cash" : paymentMethod === "card" ? "Card" : paymentMethod === "qris" ? "QRIS" : "Transfer",
       barber: [...new Set(cart.map(c => c.barber))].join(", "),
+      customer: selectedCustomer?.name,
     };
     setTransactions([newTx, ...transactions]);
     setCart([]);
     setCashReceived("");
     setIsPaymentOpen(false);
-    toast({ title: "Transaction Complete", description: `${newTx.id} - Rp ${cartTotal.toLocaleString()}` });
+    clearCustomer();
+    toast({ title: "Transaction Complete", description: `${newTx.id} - Rp ${cartTotal.toLocaleString()}${selectedCustomer ? ` • ${selectedCustomer.name}` : ""}` });
   };
 
   const todayTotal = transactions.reduce((sum, t) => sum + t.total, 0) + cartTotal;
