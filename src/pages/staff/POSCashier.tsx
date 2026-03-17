@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ShoppingCart, Plus, Trash2, CreditCard, Banknote, Wallet, X, Download } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { ShoppingCart, Plus, Trash2, CreditCard, Banknote, Wallet, X, Download, QrCode, Building2, Search, User, Phone, Copy, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface CartItem {
@@ -27,6 +28,14 @@ interface Transaction {
   total: number;
   payment: string;
   barber: string;
+  customer?: string;
+}
+
+interface Customer {
+  id: string;
+  name: string;
+  phone: string;
+  email?: string;
 }
 
 const services = [
@@ -45,6 +54,20 @@ const products = [
 
 const barbers = ["Ahmad", "Budi", "Charlie", "Self"];
 
+const mockCustomers: Customer[] = [
+  { id: "c1", name: "Rizal Hidayat", phone: "081234567890", email: "rizal@mail.com" },
+  { id: "c2", name: "Dimas Pratama", phone: "082345678901", email: "dimas@mail.com" },
+  { id: "c3", name: "Andi Saputra", phone: "083456789012" },
+  { id: "c4", name: "Fajar Nugroho", phone: "084567890123", email: "fajar@mail.com" },
+  { id: "c5", name: "Bayu Setiawan", phone: "085678901234" },
+];
+
+const bankAccounts = [
+  { bank: "BCA", accountNo: "1234567890", accountName: "Trimly Barbershop", logo: "🏦" },
+  { bank: "BNI", accountNo: "0987654321", accountName: "Trimly Barbershop", logo: "🏦" },
+  { bank: "Mandiri", accountNo: "1122334455", accountName: "Trimly Barbershop", logo: "🏦" },
+];
+
 const POSCashier = () => {
   const { toast } = useToast();
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -53,6 +76,33 @@ const POSCashier = () => {
   const [cashReceived, setCashReceived] = useState("");
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [isCashClosingOpen, setIsCashClosingOpen] = useState(false);
+  const [customerSearch, setCustomerSearch] = useState("");
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [showCustomerDropdown, setShowCustomerDropdown] = useState(false);
+  const [copiedBank, setCopiedBank] = useState<string | null>(null);
+
+  const filteredCustomers = useMemo(() => {
+    if (!customerSearch.trim()) return [];
+    const q = customerSearch.toLowerCase();
+    return mockCustomers.filter(c => c.name.toLowerCase().includes(q) || c.phone.includes(q));
+  }, [customerSearch]);
+
+  const selectCustomer = (customer: Customer) => {
+    setSelectedCustomer(customer);
+    setCustomerSearch(customer.name);
+    setShowCustomerDropdown(false);
+  };
+
+  const clearCustomer = () => {
+    setSelectedCustomer(null);
+    setCustomerSearch("");
+  };
+
+  const copyToClipboard = (text: string, bankName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedBank(bankName);
+    setTimeout(() => setCopiedBank(null), 2000);
+  };
 
   const [transactions, setTransactions] = useState<Transaction[]>([
     { id: "T001", time: "09:15", items: "Haircut, Pomade", total: 135000, payment: "Cash", barber: "Ahmad" },
